@@ -683,16 +683,6 @@
     // GoatCounter: custom events via goatcounter.count({path:"/event/..."})
     // (działa jeśli w head masz snippet i licznik jest aktywny)
     // -----------------------------
-    function trackEvent(name){
-      try{
-        if (window.goatcounter && typeof window.goatcounter.count === "function"){
-          const mode = isTeam ? "team" : "public";
-          const lang = (localStorage.getItem("lang") || "auto");
-          window.goatcounter.count({ path: `/event/${name}?mode=${mode}&lang=${lang}` });
-        }
-      }catch(e){ /* silent */ }
-    }
-
     // -----------------------------
     // I18N
     // -----------------------------
