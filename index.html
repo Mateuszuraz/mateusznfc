@@ -4,16 +4,24 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mateusz Uraz — NFC</title>
-  <meta name="description" content="Mateusz Uraz — Koordynator ds. Ciągłego Doskonalenia / Continuous Improvement. NFC wizytówka." />
+  <meta name="description" content="Mateusz Uraz — Koordynator ds. Ciągłego Doskonalenia / Continuous Improvement. Wizytówka NFC + QR + vCard." />
   <meta name="theme-color" content="#C9FF3B" />
+
+  <!-- iOS “app-like” -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Icons + PWA -->
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
 
   <style>
     :root{
       --lime:#C9FF3B;
       --ink:#0A0F0B;
-      --white:#ffffff;
       --shadow: 0 14px 34px rgba(10,15,11,.25);
       --shadow2: 0 10px 24px rgba(10,15,11,.18);
       --pillRadius: 18px;
@@ -65,7 +73,7 @@
       user-select:none;
     }
     .logo img{
-      height: 64px;
+      height: 66px;
       width:auto;
       object-fit:contain;
       filter: drop-shadow(0 10px 16px rgba(10,15,11,.10));
@@ -126,7 +134,6 @@
       box-shadow: 0 10px 18px rgba(10,15,11,.10);
     }
     .ico{ width: 22px; height: 22px; display:block; }
-
     .label{ flex:1 1 auto; font-size: 16px; }
 
     .footer{
@@ -181,11 +188,8 @@
       opacity: .72;
     }
 
-    /* content sections */
-    .section{
-      margin-top: 18px;
-      padding-top: 12px;
-    }
+    /* sections */
+    .section{ margin-top: 18px; padding-top: 12px; }
     .card{
       background: rgba(255,255,255,.78);
       border: 1px solid rgba(10,15,11,.10);
@@ -207,6 +211,7 @@
       color: rgba(10,15,11,.80);
       font-size: 14.5px;
     }
+
     .grid2{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -216,6 +221,7 @@
     @media (max-width: 420px){
       .grid2{ grid-template-columns: 1fr; }
     }
+
     .proj{
       background: rgba(10,15,11,.05);
       border: 1px solid rgba(10,15,11,.10);
@@ -305,11 +311,14 @@
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <main class="screen" role="main">
+
+      <!-- LOGO: upewnij się, że plik leży obok index.html -->
       <div class="logo">
-<img src="dcpllogo_transparent_trim.png" alt="Dan Cake" />       
+        <img src="dcpllogo_transparent_trim.png" alt="Dan Cake Polonia" />
       </div>
 
       <section class="nameBlock">
@@ -340,7 +349,7 @@
           <span class="label">NAPISZ E-MAIL</span>
         </a>
 
-        <!-- Podmień link na swój profil LinkedIn -->
+        <!-- LinkedIn: podmień na swój link, jeśli chcesz -->
         <a class="pill" href="https://www.linkedin.com/" target="_blank" rel="noopener">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -363,7 +372,6 @@
           <span class="label">ZAPISZ KONTAKT</span>
         </a>
 
-        <!-- NOWE: O MNIE -->
         <a class="pill" href="#o-mnie">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -374,7 +382,6 @@
           <span class="label">O MNIE</span>
         </a>
 
-        <!-- NOWE: MOJE PROJEKTY -->
         <a class="pill" href="#projekty">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -406,47 +413,61 @@
         </div>
       </footer>
 
-      <div class="hint">Tip: QR w prawym dolnym rogu. Sekcje “O mnie” i “Projekty” przewijają stronę.</div>
+      <div class="hint">
+        Tip: QR w prawym dolnym rogu. Dodaj stronę do ekranu głównego i wygląda jak apka.
+      </div>
 
-      <!-- SEKCJA: O MNIE -->
+      <!-- O MNIE -->
       <section class="section" id="o-mnie">
         <div class="card">
           <div class="h">O MNIE</div>
           <p class="p">
-            Koordynator CI w DanCake Polonia. Łączę Lean z praktyką na hali:
-            standaryzacja pracy, eliminacja strat i proste systemy danych.
-            Tworzę szkolenia, instrukcje i narzędzia, które realnie ułatwiają pracę.
+            Koordynator ds. Ciągłego Doskonalenia w DanCake Polonia. Łączę Lean z praktyką na hali:
+            standaryzacja pracy, eliminacja strat, budowa prostych systemów danych i szkoleń, które realnie pomagają zespołom.
+            Stawiam na rozwiązania “proste do wdrożenia” — ale dopracowane i skuteczne.
           </p>
         </div>
       </section>
 
-      <!-- SEKCJA: PROJEKTY -->
+      <!-- PROJEKTY -->
       <section class="section" id="projekty">
         <div class="card">
           <div class="h">MOJE PROJEKTY</div>
 
           <div class="grid2">
             <div class="proj">
-              <b>Matryca umiejętności</b>
-              <span>System oceny i poliwalencji na liniach produkcyjnych.</span>
+              <b>Matryca umiejętności & poliwalencja</b>
+              <span>Oceny, rozwój kompetencji, planowanie wdrożeń i szkolenia na liniach.</span>
               <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Matryca%20umiej%C4%99tno%C5%9Bci">Zapytaj</a>
             </div>
 
             <div class="proj">
               <b>Instrukcje pracy (PDF/Video)</b>
-              <span>Standaryzacja i szkolenia stanowiskowe — krok po kroku.</span>
+              <span>Standaryzacja krok-po-kroku + materiały szkoleniowe do wdrożeń.</span>
               <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Instrukcje%20pracy">Zapytaj</a>
             </div>
 
             <div class="proj">
-              <b>OEE / raportowanie</b>
-              <span>Dane operacyjne, analiza strat, dashboardy, wnioski.</span>
+              <b>OEE / straty / raportowanie zmianowe</b>
+              <span>Analiza przestojów i wydajności + czytelny dashboard dla decyzji.</span>
               <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20OEE%20i%20raportowanie">Zapytaj</a>
             </div>
 
             <div class="proj">
-              <b>Digitalizacja + AI</b>
-              <span>Google Workspace, automatyzacje, wsparcie AI w produkcji.</span>
+              <b>SMED / przezbrojenia & standardy</b>
+              <span>Baza danych przezbrojeń, skracanie czasu, stabilizacja startów produkcji.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20SMED%20i%20standaryzacja">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>Higiena & organizacja pracy (CAPA/PDCA)</b>
+              <span>Plany naprawcze, audyty, wdrożenia działań w obszarach wrażliwych.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Higiena%20i%20CAPA%2FPDCA">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>Digitalizacja + AI (Workspace/Gemini)</b>
+              <span>Automatyzacje, formularze, dashboardy, wsparcie AI w produkcji.</span>
               <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Digitalizacja%20i%20AI">Zapytaj</a>
             </div>
           </div>
@@ -474,11 +495,12 @@
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
 
+    // QR generator (krótki URL działa najlepiej; GitHub Pages zwykle jest OK)
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
       if(bytes.length > 55) return { ok:false, reason:"URL za długi. Skróć (np. domena.pl/m)." };
 
-      const size = 29;
+      const size = 29; // version 3
       const m = Array.from({length:size}, () => Array(size).fill(null));
 
       function placeFinder(r,c){
@@ -547,7 +569,7 @@
             const c=col-k;
             if(m[r][c]!==null) continue;
             let bit = (idx<stream.length) ? stream[idx++] : 0;
-            if(((r+c)&1)===0) bit ^= 1;
+            if(((r+c)&1)===0) bit ^= 1; // mask 0
             m[r][c]=bit;
           }
         }
@@ -591,8 +613,12 @@
       modalBack.addEventListener("click", (e)=>{ if(e.target === modalBack) modalBack.style.display="none"; });
 
       document.getElementById("copyLink").addEventListener("click", async ()=>{
-        try{ await navigator.clipboard.writeText(url); alert("Link skopiowany ✅"); }
-        catch(e){ alert("Nie mogę skopiować automatycznie. Skopiuj ręcznie."); }
+        try{
+          await navigator.clipboard.writeText(url);
+          alert("Link skopiowany ✅");
+        }catch(e){
+          alert("Nie mogę skopiować automatycznie. Skopiuj ręcznie z pola w oknie QR.");
+        }
       });
     })();
   </script>
