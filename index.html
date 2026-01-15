@@ -7,18 +7,16 @@
   <meta name="description" content="Mateusz Uraz — Continuous Improvement. NFC business card + portfolio." />
   <meta name="theme-color" content="#C9FF3B" />
 
-  <!-- iOS “app-like” -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-  <!-- Icons + PWA (opcjonalnie) -->
   <link rel="icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
 
-  <!-- Privacy analytics (GoatCounter) -->
+  <!-- GoatCounter -->
   <script data-goatcounter="https://mateuszuraz.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
 
@@ -35,7 +33,6 @@
       --mut:rgba(10,15,11,.72);
       --line:rgba(10,15,11,.12);
       --line2:rgba(10,15,11,.16);
-      --soft:rgba(10,15,11,.06);
     }
 
     *{ box-sizing:border-box; }
@@ -89,7 +86,7 @@
       background: rgba(255,255,255,.32);
       border: 1px solid var(--line2);
       box-shadow: 0 10px 20px rgba(10,15,11,.10);
-      font-weight: 900;
+      font-weight: 950;
       text-transform: uppercase;
       letter-spacing: .5px;
       font-size: 12px;
@@ -120,16 +117,14 @@
       border:0;
       background: transparent;
       padding: 8px 10px;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: .5px;
       text-transform: uppercase;
       font-size: 12px;
       cursor:pointer;
       color: var(--ink);
     }
-    .seg button.active{
-      background: rgba(255,255,255,.82);
-    }
+    .seg button.active{ background: rgba(255,255,255,.82); }
 
     /* logo */
     .logo{
@@ -151,7 +146,7 @@
     .nameBig{
       margin:0;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: -1px;
       text-transform: uppercase;
       line-height: .92;
@@ -161,12 +156,12 @@
       margin: 14px 0 0;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       text-transform: uppercase;
-      font-weight: 850;
+      font-weight: 900;
       letter-spacing: .6px;
       line-height: 1.1;
       font-size: 16px;
     }
-    .roleLine .mut{ opacity:.9; font-weight:850; }
+    .roleLine .mut{ opacity:.9; font-weight:900; }
 
     /* buttons */
     .btns{ display:grid; gap: 14px; margin-top: 22px; margin-bottom: 12px; }
@@ -181,13 +176,14 @@
       box-shadow: var(--shadow2);
       text-decoration:none;
       color: var(--ink);
-      font-weight: 900;
+      font-weight: 950;
       letter-spacing: .6px;
       text-transform: uppercase;
       -webkit-tap-highlight-color: transparent;
       user-select:none;
       transition: transform .12s ease, box-shadow .12s ease;
       backdrop-filter: blur(10px);
+      cursor:pointer;
     }
     .pill:hover{ box-shadow: 0 14px 28px rgba(10,15,11,.16); }
     .pill:active{ transform: scale(.988); }
@@ -222,7 +218,7 @@
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       text-transform: uppercase;
       letter-spacing: .5px;
-      font-weight: 800;
+      font-weight: 850;
       opacity: .85;
       font-size: 12px;
     }
@@ -237,7 +233,7 @@
       background: rgba(255,255,255,.32);
       text-decoration:none;
       color: var(--ink);
-      font-weight: 900;
+      font-weight: 950;
       box-shadow: 0 10px 20px rgba(10,15,11,.10);
       -webkit-tap-highlight-color: transparent;
       user-select:none;
@@ -247,7 +243,7 @@
       display:flex;
       align-items:center;
       gap: 6px;
-      font-weight: 900;
+      font-weight: 950;
       opacity: .95;
     }
     .nfc svg{ width: 22px; height:22px; }
@@ -257,74 +253,120 @@
       margin-top: 10px;
       font-size: 12.5px;
       opacity: .72;
+      font-weight: 700;
     }
 
-    /* sections */
-    .section{ margin-top: 18px; padding-top: 12px; }
-    .card{
-      background: var(--glass2);
-      border: 1px solid rgba(10,15,11,.10);
-      border-radius: 22px;
-      box-shadow: var(--shadow2);
+    /* -----------------------------
+      MODALS (full-screen, apple-ish)
+    ----------------------------- */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(10,15,11,.46);
+      display:none;
+      z-index: 60;
       padding: 14px;
-      backdrop-filter: blur(10px);
+      overflow:auto;
     }
-
-    /* NEW: section header typography */
-    .sectionHead{
+    .sheet{
+      width: min(520px, 96vw);
+      margin: 0 auto;
+      border-radius: 26px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(10,15,11,.14);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      overflow:hidden;
+    }
+    .sheetTop{
+      position: sticky;
+      top: 0;
+      z-index: 3;
       display:flex;
-      flex-direction:column;
-      gap: 6px;
-      padding: 2px 2px 10px;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 14px 12px;
       border-bottom: 1px solid rgba(10,15,11,.10);
-      margin-bottom: 12px;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
     }
-    .hBig{
-      margin:0;
+    .sheetTitle{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       text-transform: uppercase;
       letter-spacing: .7px;
       font-weight: 950;
-      font-size: 15px;
+      font-size: 14px;
+      margin: 0;
     }
-    .sectionSub{
-      margin:0;
+    .x{
+      border:none;
+      background: rgba(10,15,11,.08);
+      border: 1px solid rgba(10,15,11,.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 950;
+      cursor:pointer;
+    }
+    .sheetBody{
+      padding: 14px;
+    }
+    .sheetSub{
+      margin: 0 0 10px;
       font-size: 13.5px;
       line-height: 1.45;
-      color: rgba(10,15,11,.70);
-      font-weight: 700;
+      color: rgba(10,15,11,.72);
+      font-weight: 750;
+    }
+    .divider{
+      height: 1px;
+      background: rgba(10,15,11,.10);
+      margin: 12px 0;
     }
 
-    /* NEW: About layout */
-    .aboutGrid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    @media (min-width: 520px){
-      .aboutGrid{ grid-template-columns: 1.35fr .85fr; }
-    }
+    /* About modal content */
     .aboutLead{
       margin: 0;
-      font-size: 14.5px;
-      line-height: 1.6;
+      font-size: 14.6px;
+      line-height: 1.62;
       color: rgba(10,15,11,.86);
-      font-weight: 700;
+      font-weight: 760;
     }
     .bullets{
       margin: 10px 0 0;
       padding-left: 18px;
-      color: rgba(10,15,11,.78);
-      line-height: 1.55;
+      color: rgba(10,15,11,.80);
+      line-height: 1.58;
       font-size: 14px;
+      font-weight: 720;
     }
     .bullets li{ margin: 7px 0; }
+    .chipRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .chipSmall{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(10,15,11,.14);
+      background: rgba(255,255,255,.62);
+      font-weight: 950;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      font-size: 11px;
+      opacity: .9;
+    }
     .miniCard{
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.58);
       border: 1px solid rgba(10,15,11,.12);
       border-radius: 18px;
       padding: 12px;
       box-shadow: 0 10px 20px rgba(10,15,11,.08);
+      margin-top: 12px;
     }
     .miniHead{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
@@ -346,43 +388,30 @@
     .kv .k{
       text-transform: uppercase;
       letter-spacing: .5px;
-      font-weight: 900;
+      font-weight: 950;
       opacity: .75;
       font-size: 11.5px;
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
     .kv .v{
-      font-weight: 800;
+      font-weight: 850;
       color: rgba(10,15,11,.82);
       word-break: break-word;
     }
-    .chipRow{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .chipSmall{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(10,15,11,.14);
-      background: rgba(255,255,255,.62);
-      font-weight: 950;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-      font-size: 11px;
-      opacity: .88;
+    .mutedLine{
+      font-size: 12.5px;
+      color: rgba(10,15,11,.62);
+      line-height:1.45;
+      margin: 12px 0 0;
+      font-weight: 750;
     }
 
-    /* NEW: Portfolio styling (clearer) */
+    /* Portfolio modal */
     .filters{
       display:flex;
       gap: 10px;
       flex-wrap:wrap;
-      margin-top: 10px;
+      margin-top: 8px;
     }
     .tag{
       display:inline-flex;
@@ -407,10 +436,10 @@
       display:grid;
       grid-template-columns: 1fr;
       gap: 12px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
     .proj{
-      background: rgba(255,255,255,.44);
+      background: rgba(255,255,255,.50);
       border: 1px solid rgba(10,15,11,.12);
       border-radius: 18px;
       padding: 12px;
@@ -446,11 +475,11 @@
       white-space:nowrap;
     }
     .projDesc{
-      color: rgba(10,15,11,.76);
+      color: rgba(10,15,11,.78);
       font-size: 13.8px;
-      line-height:1.5;
+      line-height:1.55;
       margin: 6px 0 0;
-      font-weight: 700;
+      font-weight: 740;
     }
     .projMeta{
       display:flex;
@@ -465,9 +494,9 @@
       font-weight: 950;
       letter-spacing: .4px;
       text-transform: uppercase;
-      opacity:.85;
+      opacity:.86;
       border: 1px solid rgba(10,15,11,.14);
-      background: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.58);
       padding: 6px 8px;
       border-radius: 999px;
     }
@@ -497,41 +526,17 @@
     }
     .btnSmall:active{ transform: scale(.98); }
 
-    /* modal shared */
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(10,15,11,.40);
-      display:none;
+    /* QR modal (simple) */
+    .qrWrap{
+      display:grid;
       place-items:center;
-      padding: 18px;
-      z-index: 50;
-    }
-    .modal{
-      width: min(460px, 94vw);
-      border-radius: 22px;
-      background: rgba(255,255,255,.92);
+      background:#fff;
       border: 1px solid rgba(10,15,11,.12);
-      box-shadow: var(--shadow);
-      padding: 16px;
-      backdrop-filter: blur(10px);
+      border-radius: 18px;
+      padding: 14px;
+      margin: 10px 0 10px;
     }
-    .modalTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 12px;
-      margin-bottom: 10px;
-    }
-    .modalTop b{ text-transform: uppercase; letter-spacing: .6px; }
-    .x{
-      border:none;
-      background: rgba(10,15,11,.08);
-      border: 1px solid rgba(10,15,11,.10);
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-weight: 900;
-      cursor:pointer;
-    }
+    canvas#qr{ width: 240px; height:240px; image-rendering: pixelated; }
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       font-size: 12px;
@@ -553,24 +558,13 @@
       cursor:pointer;
     }
 
-    /* QR canvas */
-    .qrWrap{
-      display:grid;
-      place-items:center;
-      background:#fff;
-      border: 1px solid rgba(10,15,11,.12);
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-    canvas#qr{ width: 240px; height:240px; image-rendering: pixelated; }
-
-    .mutedLine{
-      font-size: 12.5px;
-      color: rgba(10,15,11,.62);
-      line-height:1.45;
-      margin: 10px 0 0;
-      font-weight: 700;
+    /* Accessibility helpers */
+    .srOnly{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      white-space:nowrap;border:0;
     }
   </style>
 </head>
@@ -584,7 +578,7 @@
 
         <div class="switches">
           <div class="chip">
-            <span style="font-weight:900; letter-spacing:.5px; text-transform:uppercase; font-size:12px;" id="langLabel">LANG</span>
+            <span style="font-weight:950; letter-spacing:.5px; text-transform:uppercase; font-size:12px;" id="langLabel">LANG</span>
             <div class="seg" role="group" aria-label="Language selector">
               <button id="btnPL" type="button">PL</button>
               <button id="btnEN" type="button">EN</button>
@@ -657,7 +651,6 @@
           <span class="label" id="tLinkedIn">LINKEDIN</span>
         </a>
 
-        <!-- vCard dynamic: public/team -->
         <a class="pill" id="btnVcard" href="./mateusz-uraz_public.vcf">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -681,7 +674,8 @@
           </div>
         </a>
 
-        <a class="pill" href="#about" id="btnAbout">
+        <!-- MODAL TRIGGERS -->
+        <button class="pill" type="button" id="btnAbout">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="#0A0F0B" stroke-width="2"/>
@@ -689,9 +683,9 @@
             </svg>
           </span>
           <span class="label" id="tAboutBtn">O MNIE</span>
-        </a>
+        </button>
 
-        <a class="pill" href="#portfolio" id="btnPortfolio">
+        <button class="pill" type="button" id="btnPortfolio">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M8 7h8M8 11h8M8 15h5" stroke="#0A0F0B" stroke-width="2" stroke-linecap="round"/>
@@ -699,7 +693,7 @@
             </svg>
           </span>
           <span class="label" id="tPortfolioBtn">PORTFOLIO</span>
-        </a>
+        </button>
       </section>
 
       <footer class="footer">
@@ -726,84 +720,98 @@
         Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.
       </div>
 
-      <!-- ABOUT (new layout) -->
-      <section class="section" id="about">
-        <div class="card">
-          <div class="sectionHead">
-            <div class="hBig" id="tAboutTitle">O MNIE</div>
-            <p class="sectionSub" id="tAboutSub"></p>
-          </div>
-
-          <div class="aboutGrid">
-            <div>
-              <p class="aboutLead" id="tAboutLead"></p>
-              <ul class="bullets" id="aboutBullets"></ul>
-
-              <div class="chipRow" id="aboutChips"></div>
-            </div>
-
-            <div class="miniCard">
-              <div class="miniHead" id="tQuickTitle">QUICK</div>
-              <div class="kv">
-                <div class="k" id="tKDept">DZIAŁ</div>
-                <div class="v" id="tVDept"></div>
-
-                <div class="k" id="tKLoc">LOK.</div>
-                <div class="v" id="tVLoc"></div>
-
-                <div class="k" id="tKNote">NOTE</div>
-                <div class="v" id="tVNote"></div>
-              </div>
-            </div>
-          </div>
-
-          <p class="mutedLine" id="teamNote" style="display:none;"></p>
-        </div>
-      </section>
-
-      <!-- PORTFOLIO (refined) -->
-      <section class="section" id="portfolio">
-        <div class="card">
-          <div class="sectionHead">
-            <div class="hBig" id="tPortTitle">PORTFOLIO</div>
-            <p class="sectionSub" id="tPortSub"></p>
-          </div>
-
-          <div class="filters" id="filters"></div>
-          <div class="grid" id="projectsGrid"></div>
-        </div>
-      </section>
-
     </main>
+  </div>
+
+  <!-- ABOUT MODAL -->
+  <div class="modalBack" id="aboutBack" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="About">
+      <div class="sheetTop">
+        <div>
+          <div class="sheetTitle" id="tAboutTitle">O MNIE</div>
+          <div class="sheetSub" id="tAboutSub"></div>
+        </div>
+        <button class="x" id="closeAbout">Zamknij</button>
+      </div>
+      <div class="sheetBody">
+        <p class="aboutLead" id="tAboutLead"></p>
+        <ul class="bullets" id="aboutBullets"></ul>
+
+        <div class="chipRow" id="aboutChips"></div>
+
+        <div class="miniCard">
+          <div class="miniHead" id="tQuickTitle">SZYBKO</div>
+          <div class="kv">
+            <div class="k" id="tKDept">DZIAŁ</div>
+            <div class="v" id="tVDept"></div>
+
+            <div class="k" id="tKLoc">LOK.</div>
+            <div class="v" id="tVLoc"></div>
+
+            <div class="k" id="tKNote">NOTE</div>
+            <div class="v" id="tVNote"></div>
+          </div>
+        </div>
+
+        <p class="mutedLine" id="teamNote" style="display:none;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PORTFOLIO MODAL -->
+  <div class="modalBack" id="portBack" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Portfolio">
+      <div class="sheetTop">
+        <div>
+          <div class="sheetTitle" id="tPortTitle">PORTFOLIO</div>
+          <div class="sheetSub" id="tPortSub"></div>
+        </div>
+        <button class="x" id="closePort">Zamknij</button>
+      </div>
+      <div class="sheetBody">
+        <div class="filters" id="filters"></div>
+        <div class="grid" id="projectsGrid"></div>
+      </div>
+    </div>
   </div>
 
   <!-- QR MODAL -->
   <div class="modalBack" id="qrBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="QR">
-      <div class="modalTop">
-        <b id="tQrTitle">QR</b>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="QR">
+      <div class="sheetTop">
+        <div>
+          <div class="sheetTitle" id="tQrTitle">QR</div>
+          <div class="sheetSub" id="tQrSub">Kod do tej strony</div>
+        </div>
         <button class="x" id="closeQr">Zamknij</button>
       </div>
-      <div class="qrWrap">
-        <canvas id="qr" width="260" height="260"></canvas>
+      <div class="sheetBody">
+        <div class="qrWrap">
+          <canvas id="qr" width="260" height="260"></canvas>
+        </div>
+        <div class="mono" id="pageUrl"></div>
+        <button class="copy" id="copyLink">Kopiuj link</button>
       </div>
-      <div class="mono" id="pageUrl"></div>
-      <button class="copy" id="copyLink">Kopiuj link</button>
     </div>
   </div>
 
-  <!-- PROJECT MODAL -->
+  <!-- PROJECT DETAILS MODAL -->
   <div class="modalBack" id="projBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Project details">
-      <div class="modalTop">
-        <b id="projTitle">PROJECT</b>
+    <div class="sheet" role="dialog" aria-modal="true" aria-label="Project details">
+      <div class="sheetTop">
+        <div>
+          <div class="sheetTitle" id="projTitle">PROJECT</div>
+          <div class="sheetSub" id="projKpi">KPI</div>
+        </div>
         <button class="x" id="closeProj">Zamknij</button>
       </div>
-      <div class="mono" id="projKpi">KPI</div>
-      <p style="margin:0; line-height:1.6; color:rgba(10,15,11,.80); font-weight:700;" id="projBody"></p>
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btnSmall" id="projMail" href="mailto:m.uraz@dancake.pl">Kontakt</a>
-        <button class="btnSmall" id="projCopy">Kopiuj opis</button>
+      <div class="sheetBody">
+        <p style="margin:0; line-height:1.65; color:rgba(10,15,11,.82); font-weight:760;" id="projBody"></p>
+        <div class="divider"></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btnSmall" id="projMail" href="mailto:m.uraz@dancake.pl">Kontakt</a>
+          <button class="btnSmall" id="projCopy">Kopiuj opis</button>
+        </div>
       </div>
     </div>
   </div>
@@ -818,21 +826,19 @@
       email: "m.uraz@dancake.pl",
       linkedin: "https://www.linkedin.com/in/mateusz-uraz-67a158367",
       booking: "https://calendar.app.google/JySXUEVTa76xAVJcA",
-      company: "DanCake Polonia Spółka z o.o.",
-      address: "ul. Transportowców 15, 32-500 Chrzanów",
       vcardPublic: "./mateusz-uraz_public.vcf",
       vcardTeam: "./mateusz-uraz_team.vcf"
     };
 
     // -----------------------------
-    // MODE (public / team)
+    // MODE
     // -----------------------------
     const qs = (k) => new URLSearchParams(location.search).get(k);
     const isTeam = (qs("team") === "1");
     const byId = (id) => document.getElementById(id);
 
     // -----------------------------
-    // Privacy analytics: GoatCounter events
+    // GoatCounter events
     // -----------------------------
     function trackEvent(name){
       try{
@@ -841,7 +847,7 @@
           const lang = (localStorage.getItem("lang") || "auto");
           window.goatcounter.count({ path: `/event/${name}?mode=${mode}&lang=${lang}` });
         }
-      }catch(e){ /* silent */ }
+      }catch(e){}
     }
 
     // -----------------------------
@@ -869,8 +875,7 @@
 
         aboutTitle: "O MNIE",
         aboutSub: "Lean + praktyka na hali. Prosto, szybko, skutecznie.",
-        aboutLead:
-          "Koordynuję projekty CI w DanCake Polonia — łączę standardy, dane i realne wdrożenia na produkcji.",
+        aboutLead: "Koordynuję projekty CI w DanCake Polonia — łączę standardy, dane i realne wdrożenia na produkcji.",
         aboutBullets: [
           "Standaryzacja pracy, szkolenia, matryce umiejętności i wdrożenia nowych osób.",
           "Analiza strat, OEE, przestoje: od danych do decyzji (bez korpo-teorii).",
@@ -878,7 +883,6 @@
           "Higiena i organizacja pracy: checklisty, CAPA/PDCA, weryfikacja skuteczności."
         ],
         aboutChips: ["LEAN", "OEE", "SMED", "SOP", "DATA", "PDCA"],
-
         quickTitle: "SZYBKO",
         kDept: "DZIAŁ",
         vDept: "Continuous Improvement",
@@ -886,13 +890,12 @@
         vLoc: "Chrzanów (PL)",
         kNote: "NOTE",
         vNote: "Standaryzacja • dane • szkolenia",
-
-        teamNote:
-          "Tryb TEAM aktywny: widoczne dodatkowe informacje wewnętrzne. Użyj linku public dla osób z zewnątrz.",
+        teamNote: "Tryb TEAM aktywny: widoczne dodatkowe informacje wewnętrzne. Użyj linku public dla osób z zewnątrz.",
 
         portTitle: "PORTFOLIO",
         portSub: "Wybrane inicjatywy (z KPI). Kliknij „Szczegóły”, żeby zobaczyć opis.",
         qrTitle: "QR DO STRONY",
+        qrSub: "Kod do tej strony",
         close: "Zamknij",
         copyLink: "Kopiuj link",
         details: "Szczegóły",
@@ -923,8 +926,7 @@
 
         aboutTitle: "ABOUT",
         aboutSub: "Lean + shop-floor execution. Simple, fast, effective.",
-        aboutLead:
-          "I run Continuous Improvement initiatives at DanCake Polonia — combining standards, data and real implementation on the floor.",
+        aboutLead: "I run CI initiatives at DanCake Polonia — combining standards, data and real implementation on the floor.",
         aboutBullets: [
           "Work standardization, training, skills matrices and onboarding systems.",
           "Loss analysis, OEE, downtime: from data to decisions (no corporate fluff).",
@@ -932,7 +934,6 @@
           "Hygiene & work organization: checklists, CAPA/PDCA, effectiveness checks."
         ],
         aboutChips: ["LEAN", "OEE", "SMED", "SOP", "DATA", "PDCA"],
-
         quickTitle: "QUICK",
         kDept: "DEPT",
         vDept: "Continuous Improvement",
@@ -940,13 +941,12 @@
         vLoc: "Chrzanów (PL)",
         kNote: "NOTE",
         vNote: "Standards • data • training",
-
-        teamNote:
-          "TEAM mode active: extra internal details are visible. Use the public link for external contacts.",
+        teamNote: "TEAM mode active: extra internal details are visible. Use the public link for external contacts.",
 
         portTitle: "PORTFOLIO",
         portSub: "Selected initiatives (with KPIs). Tap “Details” for the full description.",
         qrTitle: "QR TO THIS PAGE",
+        qrSub: "Code to this page",
         close: "Close",
         copyLink: "Copy link",
         details: "Details",
@@ -958,7 +958,7 @@
     };
 
     // -----------------------------
-    // Portfolio DATA (edytujesz KPI kiedy chcesz)
+    // Portfolio DATA
     // -----------------------------
     const PROJECTS = [
       {
@@ -1067,6 +1067,48 @@
       byId("teamNote").style.display = isTeam ? "" : "none";
     }
 
+    // -----------------------------
+    // Modal helpers
+    // -----------------------------
+    function openModal(backEl){
+      backEl.style.display = "block";
+      backEl.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+    }
+    function closeModal(backEl){
+      backEl.style.display = "none";
+      backEl.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+    }
+    function bindModal(backId, closeBtnId){
+      const back = byId(backId);
+      const closeBtn = byId(closeBtnId);
+
+      closeBtn.addEventListener("click", ()=> closeModal(back));
+      back.addEventListener("click", (e)=>{ if(e.target===back) closeModal(back); });
+
+      return back;
+    }
+
+    // Escape closes the top-most open modal
+    function closeTopModal(){
+      const ids = ["projBack","qrBack","portBack","aboutBack"];
+      for(const id of ids){
+        const el = byId(id);
+        if(el.style.display === "block"){
+          closeModal(el);
+          return true;
+        }
+      }
+      return false;
+    }
+    document.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape"){ closeTopModal(); }
+    });
+
+    // -----------------------------
+    // Filters + Projects
+    // -----------------------------
     function renderFilters(lang){
       const wrap = byId("filters");
       wrap.innerHTML = "";
@@ -1112,7 +1154,7 @@
       };
 
       trackEvent("project_open_" + p.id);
-      byId("projBack").style.display = "grid";
+      openModal(byId("projBack"));
     }
 
     function renderProjects(lang){
@@ -1191,7 +1233,30 @@
     }
 
     // -----------------------------
-    // QR (lightweight)
+    // About render
+    // -----------------------------
+    function renderAboutBullets(list){
+      const ul = byId("aboutBullets");
+      ul.innerHTML = "";
+      list.forEach(txt=>{
+        const li = document.createElement("li");
+        li.textContent = txt;
+        ul.appendChild(li);
+      });
+    }
+    function renderAboutChips(list){
+      const wrap = byId("aboutChips");
+      wrap.innerHTML = "";
+      list.forEach(t=>{
+        const chip = document.createElement("div");
+        chip.className = "chipSmall";
+        chip.textContent = t;
+        wrap.appendChild(chip);
+      });
+    }
+
+    // -----------------------------
+    // QR (lightweight generator)
     // -----------------------------
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
@@ -1299,26 +1364,6 @@
     // -----------------------------
     // APPLY LANGUAGE
     // -----------------------------
-    function renderAboutBullets(list){
-      const ul = byId("aboutBullets");
-      ul.innerHTML = "";
-      list.forEach(txt=>{
-        const li = document.createElement("li");
-        li.textContent = txt;
-        ul.appendChild(li);
-      });
-    }
-    function renderAboutChips(list){
-      const wrap = byId("aboutChips");
-      wrap.innerHTML = "";
-      list.forEach(t=>{
-        const chip = document.createElement("div");
-        chip.className = "chipSmall";
-        chip.textContent = t;
-        wrap.appendChild(chip);
-      });
-    }
-
     function applyLanguage(lang){
       currentLang = lang;
       localStorage.setItem("lang", lang);
@@ -1340,6 +1385,7 @@
       byId("sysLine").textContent = t.sys;
       byId("hintLine").textContent = t.hint;
 
+      // About modal content
       byId("tAboutTitle").textContent = t.aboutTitle;
       byId("tAboutSub").textContent = t.aboutSub;
       byId("tAboutLead").textContent = t.aboutLead;
@@ -1356,12 +1402,19 @@
 
       byId("teamNote").textContent = t.teamNote;
 
+      // Portfolio modal content
       byId("tPortTitle").textContent = t.portTitle;
       byId("tPortSub").textContent = t.portSub;
 
+      // QR modal labels
       byId("tQrTitle").textContent = t.qrTitle;
+      byId("tQrSub").textContent = t.qrSub;
+
+      byId("closeAbout").textContent = t.close;
+      byId("closePort").textContent = t.close;
       byId("closeQr").textContent = t.close;
       byId("closeProj").textContent = t.close;
+
       byId("copyLink").textContent = t.copyLink;
       byId("projMail").textContent = t.contact;
       byId("projCopy").textContent = t.copyDesc;
@@ -1391,25 +1444,29 @@
       // vCard dynamic (public/team)
       byId("btnVcard").href = isTeam ? CONTACT.vcardTeam : CONTACT.vcardPublic;
 
-      // event tracking for main actions
+      // tracking
       byId("btnCall").addEventListener("click", ()=> trackEvent("call"));
       byId("btnMail").addEventListener("click", ()=> trackEvent("email"));
       byId("btnMeet").addEventListener("click", ()=> trackEvent("book"));
       byId("btnLinkedIn").addEventListener("click", ()=> trackEvent("linkedin"));
       byId("btnVcard").addEventListener("click", ()=> trackEvent("vcard"));
-      byId("btnAbout").addEventListener("click", ()=> trackEvent("about"));
-      byId("btnPortfolio").addEventListener("click", ()=> trackEvent("portfolio"));
       if (isTeam) byId("btnExt").addEventListener("click", ()=> trackEvent("extension"));
 
-      // language: ?lang=en/pl > localStorage > browser
-      const urlLang = qs("lang");
-      const stored = localStorage.getItem("lang");
-      const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
-      let lang = (urlLang==="pl" || urlLang==="en") ? urlLang : (stored==="pl"||stored==="en") ? stored : browser;
+      // bind modals
+      const aboutBack = bindModal("aboutBack","closeAbout");
+      const portBack  = bindModal("portBack","closePort");
+      const qrBack    = bindModal("qrBack","closeQr");
+      const projBack  = bindModal("projBack","closeProj");
 
-      // lang buttons
-      byId("btnPL").addEventListener("click", ()=>{ applyLanguage("pl"); trackEvent("lang_pl"); });
-      byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
+      // open about/portfolio
+      byId("btnAbout").addEventListener("click", ()=>{
+        openModal(aboutBack);
+        trackEvent("about_open");
+      });
+      byId("btnPortfolio").addEventListener("click", ()=>{
+        openModal(portBack);
+        trackEvent("portfolio_open");
+      });
 
       // QR modal
       const cleanUrl = location.href.replace(/#.*$/,'');
@@ -1418,13 +1475,10 @@
       const qr = makeQR(cleanUrl);
       if(qr.ok) drawQR(byId("qr"), qr.matrix);
 
-      const qrBack = byId("qrBack");
       byId("openQr").addEventListener("click", ()=>{
-        qrBack.style.display="grid";
+        openModal(qrBack);
         trackEvent("qr_open");
       });
-      byId("closeQr").addEventListener("click", ()=> qrBack.style.display="none");
-      qrBack.addEventListener("click", (e)=>{ if(e.target===qrBack) qrBack.style.display="none"; });
 
       byId("copyLink").addEventListener("click", async ()=>{
         try{
@@ -1436,13 +1490,22 @@
         }
       });
 
-      // Project modal close
-      const projBack = byId("projBack");
-      byId("closeProj").addEventListener("click", ()=> projBack.style.display="none");
-      projBack.addEventListener("click", (e)=>{ if(e.target===projBack) projBack.style.display="none"; });
+      // language
+      const urlLang = qs("lang");
+      const stored = localStorage.getItem("lang");
+      const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
+      let lang = (urlLang==="pl" || urlLang==="en") ? urlLang : (stored==="pl"||stored==="en") ? stored : browser;
 
-      // initial language render
+      byId("btnPL").addEventListener("click", ()=>{ applyLanguage("pl"); trackEvent("lang_pl"); });
+      byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
+
+      // init lang render
       applyLanguage(lang);
+
+      // close modals on background tap (handled in bindModal)
+      // project modal uses openModal now, so it also locks scroll
+      // ensure project modal does not break scroll lock nesting
+      // (we keep it simple: always lock when a modal opens; unlock on close)
     })();
   </script>
 </body>
