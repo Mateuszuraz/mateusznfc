@@ -29,13 +29,11 @@
       --pillRadius:18px;
       --circle:48px;
       --glass:rgba(255,255,255,.84);
-      --glass2:rgba(255,255,255,.76);
       --mut:rgba(10,15,11,.72);
       --line:rgba(10,15,11,.12);
       --line2:rgba(10,15,11,.16);
       --blur: 16px;
 
-      /* animation tokens */
       --easeOut: cubic-bezier(.16, 1, .3, 1);
       --easeIn: cubic-bezier(.4, 0, 1, 1);
       --spring: cubic-bezier(.18, 1.2, .24, 1);
@@ -50,9 +48,24 @@
       color: var(--ink);
       overflow-x:hidden;
     }
+
+    /* --- Canvas animated background --- */
+    #bg{
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: .95;
+      mix-blend-mode: soft-light;
+    }
+
+    /* subtle overlay glow to keep “premium” */
     body::before{
       content:"";
       position:fixed; inset:0;
+      z-index:-2;
       background:
         radial-gradient(800px 380px at 20% 20%, rgba(255,255,255,.22), transparent 62%),
         radial-gradient(900px 420px at 90% 25%, rgba(255,255,255,.18), transparent 62%),
@@ -175,6 +188,7 @@
     .btns{ display:grid; gap: 14px; margin-top: 22px; margin-bottom: 12px; }
     .pill{
       display:flex;
+      width:100%;
       align-items:center;
       gap: 12px;
       padding: 12px 14px 12px 12px;
@@ -194,6 +208,8 @@
       -webkit-backdrop-filter: blur(var(--blur));
       cursor:pointer;
     }
+    a.pill{ text-decoration:none; }
+    button.pill{ border:none; }
     .pill:hover{ box-shadow: 0 14px 28px rgba(10,15,11,.16); }
     .pill:active{ transform: scale(.988); }
     .iconCircle{
@@ -275,7 +291,6 @@
       padding: 14px;
       overflow:auto;
 
-      /* hidden by default via attribute */
       display:none;
       opacity: 0;
       background: rgba(10,15,11,.46);
@@ -329,11 +344,11 @@
         opacity 180ms var(--easeIn);
     }
 
-    /* Reduce motion */
     @media (prefers-reduced-motion: reduce){
       .modalBack, .sheet, .pill{ transition:none !important; }
       .sheet{ transform:none !important; opacity:1 !important; }
       .modalBack{ opacity:1 !important; }
+      #bg{ display:none !important; }
     }
 
     .sheetTop{
@@ -619,6 +634,9 @@
 </head>
 
 <body>
+  <!-- Canvas animated liquid background -->
+  <canvas id="bg" aria-hidden="true"></canvas>
+
   <div class="wrap">
     <main class="screen" role="main">
 
@@ -864,6 +882,9 @@
   </div>
 
   <script>
+    // -----------------------------
+    // CONFIG
+    // -----------------------------
     const CONTACT = {
       phone: "+48452432235",
       ext: "7441",
@@ -888,6 +909,9 @@
       }catch(e){}
     }
 
+    // -----------------------------
+    // I18N
+    // -----------------------------
     const I18N = {
       pl: {
         modePublic: "PUBLIC",
@@ -912,7 +936,7 @@
           "Standaryzacja pracy, szkolenia, matryce umiejętności i wdrożenia nowych osób.",
           "Analiza strat, OEE, przestoje: od danych do decyzji (bez korpo-teorii).",
           "SMED / przezbrojenia: skrócenie czasu + stabilny start produkcji.",
-          "Higiena i organizacja pracy: checklisty, CAPA/PDCA, weryfikfikacja skuteczności."
+          "Higiena i organizacja pracy: checklisty, CAPA/PDCA, weryfikacja skuteczności."
         ],
         aboutChips: ["LEAN", "OEE", "SMED", "SOP", "DATA", "PDCA"],
         quickTitle: "SZYBKO",
@@ -983,6 +1007,9 @@
       }
     };
 
+    // -----------------------------
+    // Portfolio DATA
+    // -----------------------------
     const PROJECTS = [
       {
         id: "skills",
@@ -1028,30 +1055,31 @@
           pl: "Źródła danych (PLC/HMI/sensory), klasyfikacja przestojów i dashboard pilotażowy pod kierownictwo.",
           en: "Data sources (PLC/HMI/sensors), downtime taxonomy and a pilot dashboard for leadership."
         }
+      },
+      {
+        id: "smed",
+        tags: ["LEAN","SMED"],
+        kpi: { pl: "SMED −X min", en: "SMED −X min" },
+        title: { pl: "SMED / przezbrojenia & standardy", en: "SMED / changeovers & standards" },
+        desc:  { pl: "Skracanie przezbrojeń i stabilne starty produkcji.", en: "Shorter changeovers and stable production starts." },
+        case_public: {
+          pl: "Standaryzacja przezbrojeń: rozpiska kroków, role, przygotowanie, kontrola startu.",
+          en: "Changeover standardization: steps, roles, prep and start-up control."
+        },
+        case_team: {
+          pl: "Baza danych przezbrojeń (linie 6/7), analizy strat czasu i działania doskonalące.",
+          en: "Changeover database (lines 6/7), time-loss analysis and improvement actions."
+        }
       }
     ];
 
-    const ALL_TAGS = Array.from(new Set(PROJECTS.flatMap(p => p.tags))).sort();
-    let activeTag = "ALL";
-    let currentLang = "pl";
-
-    function setActiveLangButtons(lang){
-      byId("btnPL").classList.toggle("active", lang==="pl");
-      byId("btnEN").classList.toggle("active", lang==="en");
-    }
-
-    function applyMode(){
-      byId("btnExt").style.display = isTeam ? "" : "none";
-      byId("teamNote").style.display = isTeam ? "" : "none";
-    }
-
-    // -------- Modal animation helpers (no flicker) --------
+    // -----------------------------
+    // Modal helpers
+    // -----------------------------
     function openModal(backEl){
       backEl.style.display = "block";
       backEl.setAttribute("aria-hidden","false");
       document.body.style.overflow = "hidden";
-
-      // allow CSS to catch up
       requestAnimationFrame(()=> backEl.classList.add("show"));
       backEl.classList.remove("hide");
     }
@@ -1089,10 +1117,26 @@
     }
     document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeTopModal(); });
 
+    // -----------------------------
+    // Mode
+    // -----------------------------
+    function applyMode(){
+      byId("btnExt").style.display = isTeam ? "" : "none";
+      byId("teamNote").style.display = isTeam ? "" : "none";
+    }
+
+    // -----------------------------
+    // Filters + projects
+    // -----------------------------
+    const ALL_TAGS = Array.from(new Set(PROJECTS.flatMap(p => p.tags))).sort();
+    let activeTag = "ALL";
+    let currentLang = "pl";
+
     function renderFilters(lang){
       const wrap = byId("filters");
       wrap.innerHTML = "";
       const tags = ["ALL", ...ALL_TAGS];
+
       tags.forEach(t => {
         const el = document.createElement("div");
         el.className = "tag" + (t===activeTag ? " active" : "");
@@ -1232,7 +1276,14 @@
       });
     }
 
+    function setActiveLangButtons(lang){
+      byId("btnPL").classList.toggle("active", lang==="pl");
+      byId("btnEN").classList.toggle("active", lang==="en");
+    }
+
+    // -----------------------------
     // QR generator (lightweight)
+    // -----------------------------
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
       if(bytes.length > 55) return { ok:false };
@@ -1331,6 +1382,9 @@
       }
     }
 
+    // -----------------------------
+    // Apply language
+    // -----------------------------
     function applyLanguage(lang){
       currentLang = lang;
       localStorage.setItem("lang", lang);
@@ -1390,18 +1444,144 @@
       renderProjects(lang);
     }
 
+    // -----------------------------
+    // OPTION 3: Canvas “Liquid” background
+    // -----------------------------
+    function initLiquidBackground(){
+      const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(reduceMotion) return;
+
+      const canvas = byId("bg");
+      const ctx = canvas.getContext("2d", { alpha: true });
+
+      // Render at lower resolution for performance (looks like blur, very “premium”)
+      const DPR = Math.min(window.devicePixelRatio || 1, 2);
+      let w = 0, h = 0, rw = 0, rh = 0;
+
+      // small noise tile (cached)
+      const noise = document.createElement("canvas");
+      const nctx = noise.getContext("2d");
+      const NS = 96;
+      noise.width = NS;
+      noise.height = NS;
+      function regenNoise(){
+        const img = nctx.createImageData(NS, NS);
+        for(let i=0;i<img.data.length;i+=4){
+          const v = (Math.random()*255)|0;
+          img.data[i] = v;
+          img.data[i+1] = v;
+          img.data[i+2] = v;
+          img.data[i+3] = 16; // alpha
+        }
+        nctx.putImageData(img,0,0);
+      }
+      regenNoise();
+
+      function resize(){
+        w = window.innerWidth;
+        h = window.innerHeight;
+
+        // downscale render buffer (0.62 looks smooth + fast)
+        const scale = 0.62;
+        rw = Math.max(320, Math.floor(w * DPR * scale));
+        rh = Math.max(480, Math.floor(h * DPR * scale));
+
+        canvas.width = rw;
+        canvas.height = rh;
+        canvas.style.width = w + "px";
+        canvas.style.height = h + "px";
+      }
+      resize();
+      window.addEventListener("resize", resize, { passive:true });
+
+      const blobs = [
+        { r: 0.42, sp: 0.55, a: 0.34, c: "rgba(255,255,255,.80)" },
+        { r: 0.36, sp: 0.48, a: 0.26, c: "rgba(10,15,11,.40)" },
+        { r: 0.30, sp: 0.62, a: 0.22, c: "rgba(255,255,255,.55)" },
+        { r: 0.26, sp: 0.70, a: 0.18, c: "rgba(10,15,11,.28)" }
+      ];
+
+      let t0 = performance.now();
+      function tick(now){
+        const t = (now - t0) * 0.001;
+
+        // clear
+        ctx.clearRect(0,0,rw,rh);
+
+        // base very subtle dark-to-light (transparent, body lime comes through)
+        const base = ctx.createLinearGradient(0,0,rw,rh);
+        base.addColorStop(0, "rgba(255,255,255,.06)");
+        base.addColorStop(1, "rgba(10,15,11,.06)");
+        ctx.fillStyle = base;
+        ctx.fillRect(0,0,rw,rh);
+
+        // blobs (liquid)
+        ctx.globalCompositeOperation = "lighter";
+        for(let i=0;i<blobs.length;i++){
+          const b = blobs[i];
+
+          // smooth Lissajous-like paths
+          const px = (0.5 + 0.32*Math.sin(t*b.sp + i*1.7) + 0.10*Math.sin(t*0.9 + i*2.3));
+          const py = (0.5 + 0.28*Math.cos(t*(b.sp*0.9) + i*1.1) + 0.12*Math.sin(t*0.7 + i*1.9));
+
+          const x = px * rw;
+          const y = py * rh;
+
+          const rad = (Math.min(rw,rh) * b.r) * (0.92 + 0.08*Math.sin(t*1.1 + i));
+
+          const g = ctx.createRadialGradient(x, y, rad*0.10, x, y, rad);
+          g.addColorStop(0, b.c.replace(")", `,${b.a})`).replace("rgba(", "rgba(")); // keep alpha
+          g.addColorStop(1, "rgba(255,255,255,0)");
+
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x,y,rad,0,Math.PI*2);
+          ctx.fill();
+        }
+
+        // soften (cheap blur pass)
+        ctx.globalCompositeOperation = "source-over";
+        ctx.save();
+        ctx.filter = "blur(10px)";
+        ctx.drawImage(canvas, 0,0,rw,rh);
+        ctx.restore();
+
+        // subtle grain
+        ctx.globalCompositeOperation = "overlay";
+        const ox = Math.floor((t*40) % NS);
+        const oy = Math.floor((t*28) % NS);
+        ctx.globalAlpha = 0.20;
+        for(let y= -NS; y<rh+NS; y+=NS){
+          for(let x= -NS; x<rw+NS; x+=NS){
+            ctx.drawImage(noise, x+ox, y+oy);
+          }
+        }
+        ctx.globalAlpha = 1;
+
+        // occasionally refresh grain so it doesn’t “pattern loop”
+        if ((now|0) % 1700 < 16) regenNoise();
+
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    // -----------------------------
+    // INIT
+    // -----------------------------
     (function init(){
       byId("y").textContent = new Date().getFullYear();
       applyMode();
 
+      // links
       byId("btnCall").href = `tel:${CONTACT.phone}`;
       byId("btnMail").href = `mailto:${CONTACT.email}`;
       byId("btnMeet").href = CONTACT.booking;
       byId("btnLinkedIn").href = CONTACT.linkedin;
       byId("btnExt").href = `tel:${CONTACT.ext}`;
-
       byId("btnVcard").href = isTeam ? CONTACT.vcardTeam : CONTACT.vcardPublic;
 
+      // tracking main actions
       byId("btnCall").addEventListener("click", ()=> trackEvent("call"));
       byId("btnMail").addEventListener("click", ()=> trackEvent("email"));
       byId("btnMeet").addEventListener("click", ()=> trackEvent("book"));
@@ -1409,6 +1589,7 @@
       byId("btnVcard").addEventListener("click", ()=> trackEvent("vcard"));
       if (isTeam) byId("btnExt").addEventListener("click", ()=> trackEvent("extension"));
 
+      // modals
       const aboutBack = bindModal("aboutBack","closeAbout");
       const portBack  = bindModal("portBack","closePort");
       const qrBack    = bindModal("qrBack","closeQr");
@@ -1423,9 +1604,9 @@
         trackEvent("portfolio_open");
       });
 
+      // QR modal
       const cleanUrl = location.href.replace(/#.*$/,'');
       byId("pageUrl").textContent = cleanUrl;
-
       const qr = makeQR(cleanUrl);
       if(qr.ok) drawQR(byId("qr"), qr.matrix);
 
@@ -1444,6 +1625,7 @@
         }
       });
 
+      // language: ?lang=en/pl > localStorage > browser
       const urlLang = qs("lang");
       const stored = localStorage.getItem("lang");
       const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
@@ -1453,6 +1635,9 @@
       byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
 
       applyLanguage(lang);
+
+      // start background
+      initLiquidBackground();
     })();
   </script>
 </body>
