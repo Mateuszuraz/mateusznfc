@@ -33,6 +33,12 @@
       --mut:rgba(10,15,11,.72);
       --line:rgba(10,15,11,.12);
       --line2:rgba(10,15,11,.16);
+      --blur: 16px;
+
+      /* animation tokens */
+      --easeOut: cubic-bezier(.16, 1, .3, 1);
+      --easeIn: cubic-bezier(.4, 0, 1, 1);
+      --spring: cubic-bezier(.18, 1.2, .24, 1);
     }
 
     *{ box-sizing:border-box; }
@@ -91,7 +97,8 @@
       letter-spacing: .5px;
       font-size: 12px;
       user-select:none;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
     }
     .switches{ display:flex; gap: 10px; align-items:center; }
     .chip{
@@ -104,7 +111,8 @@
       border: 1px solid var(--line2);
       box-shadow: 0 10px 20px rgba(10,15,11,.10);
       user-select:none;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
     }
     .seg{
       display:flex;
@@ -181,8 +189,9 @@
       text-transform: uppercase;
       -webkit-tap-highlight-color: transparent;
       user-select:none;
-      transition: transform .12s ease, box-shadow .12s ease;
-      backdrop-filter: blur(10px);
+      transition: transform .12s var(--easeOut), box-shadow .12s var(--easeOut);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       cursor:pointer;
     }
     .pill:hover{ box-shadow: 0 14px 28px rgba(10,15,11,.16); }
@@ -237,7 +246,8 @@
       box-shadow: 0 10px 20px rgba(10,15,11,.10);
       -webkit-tap-highlight-color: transparent;
       user-select:none;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
     }
     .nfc{
       display:flex;
@@ -257,16 +267,38 @@
     }
 
     /* -----------------------------
-      MODALS (full-screen, apple-ish)
+      MODALS (animated)
     ----------------------------- */
     .modalBack{
       position:fixed; inset:0;
-      background: rgba(10,15,11,.46);
-      display:none;
       z-index: 60;
       padding: 14px;
       overflow:auto;
+
+      /* hidden by default via attribute */
+      display:none;
+      opacity: 0;
+      background: rgba(10,15,11,.46);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+
+      transition:
+        opacity 220ms var(--easeOut),
+        backdrop-filter 260ms var(--easeOut),
+        -webkit-backdrop-filter 260ms var(--easeOut);
     }
+    .modalBack.show{
+      display:block;
+      opacity: 1;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .modalBack.hide{
+      opacity: 0;
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+    }
+
     .sheet{
       width: min(520px, 96vw);
       margin: 0 auto;
@@ -274,9 +306,36 @@
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(10,15,11,.14);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       overflow:hidden;
+
+      transform: translateY(18px) scale(.985);
+      opacity: 0;
+      transition:
+        transform 420ms var(--spring),
+        opacity 220ms var(--easeOut);
+      will-change: transform, opacity;
     }
+    .modalBack.show .sheet{
+      transform: translateY(0px) scale(1);
+      opacity: 1;
+    }
+    .modalBack.hide .sheet{
+      transform: translateY(14px) scale(.99);
+      opacity: 0;
+      transition:
+        transform 220ms var(--easeIn),
+        opacity 180ms var(--easeIn);
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .modalBack, .sheet, .pill{ transition:none !important; }
+      .sheet{ transform:none !important; opacity:1 !important; }
+      .modalBack{ opacity:1 !important; }
+    }
+
     .sheetTop{
       position: sticky;
       top: 0;
@@ -288,7 +347,8 @@
       padding: 14px 14px 12px;
       border-bottom: 1px solid rgba(10,15,11,.10);
       background: rgba(255,255,255,.82);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
     }
     .sheetTitle{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
@@ -297,6 +357,13 @@
       font-weight: 950;
       font-size: 14px;
       margin: 0;
+    }
+    .sheetSub{
+      margin: 2px 0 0;
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: rgba(10,15,11,.72);
+      font-weight: 750;
     }
     .x{
       border:none;
@@ -307,23 +374,14 @@
       font-weight: 950;
       cursor:pointer;
     }
-    .sheetBody{
-      padding: 14px;
-    }
-    .sheetSub{
-      margin: 0 0 10px;
-      font-size: 13.5px;
-      line-height: 1.45;
-      color: rgba(10,15,11,.72);
-      font-weight: 750;
-    }
+    .sheetBody{ padding: 14px; }
     .divider{
       height: 1px;
       background: rgba(10,15,11,.10);
       margin: 12px 0;
     }
 
-    /* About modal content */
+    /* About content */
     .aboutLead{
       margin: 0;
       font-size: 14.6px;
@@ -406,7 +464,7 @@
       font-weight: 750;
     }
 
-    /* Portfolio modal */
+    /* Portfolio */
     .filters{
       display:flex;
       gap: 10px;
@@ -427,7 +485,7 @@
       font-size: 11.5px;
       cursor:pointer;
       user-select:none;
-      transition: transform .10s ease;
+      transition: transform .10s var(--easeOut);
     }
     .tag:active{ transform: scale(.98); }
     .tag.active{ background: rgba(255,255,255,.90); }
@@ -522,11 +580,11 @@
       text-decoration:none;
       color: var(--ink);
       user-select:none;
-      transition: transform .10s ease;
+      transition: transform .10s var(--easeOut);
     }
     .btnSmall:active{ transform: scale(.98); }
 
-    /* QR modal (simple) */
+    /* QR */
     .qrWrap{
       display:grid;
       place-items:center;
@@ -556,15 +614,6 @@
       letter-spacing:.5px;
       text-transform: uppercase;
       cursor:pointer;
-    }
-
-    /* Accessibility helpers */
-    .srOnly{
-      position:absolute;
-      width:1px;height:1px;
-      padding:0;margin:-1px;
-      overflow:hidden;clip:rect(0,0,0,0);
-      white-space:nowrap;border:0;
     }
   </style>
 </head>
@@ -674,7 +723,6 @@
           </div>
         </a>
 
-        <!-- MODAL TRIGGERS -->
         <button class="pill" type="button" id="btnAbout">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
@@ -736,7 +784,6 @@
       <div class="sheetBody">
         <p class="aboutLead" id="tAboutLead"></p>
         <ul class="bullets" id="aboutBullets"></ul>
-
         <div class="chipRow" id="aboutChips"></div>
 
         <div class="miniCard">
@@ -817,9 +864,6 @@
   </div>
 
   <script>
-    // -----------------------------
-    // CONFIG
-    // -----------------------------
     const CONTACT = {
       phone: "+48452432235",
       ext: "7441",
@@ -830,16 +874,10 @@
       vcardTeam: "./mateusz-uraz_team.vcf"
     };
 
-    // -----------------------------
-    // MODE
-    // -----------------------------
     const qs = (k) => new URLSearchParams(location.search).get(k);
     const isTeam = (qs("team") === "1");
     const byId = (id) => document.getElementById(id);
 
-    // -----------------------------
-    // GoatCounter events
-    // -----------------------------
     function trackEvent(name){
       try{
         if (window.goatcounter && typeof window.goatcounter.count === "function"){
@@ -850,16 +888,12 @@
       }catch(e){}
     }
 
-    // -----------------------------
-    // I18N
-    // -----------------------------
     const I18N = {
       pl: {
         modePublic: "PUBLIC",
         modeTeam: "TEAM",
         lang: "JĘZYK",
         role: 'KOORDYNATOR <span class="mut">CONTINUOUS</span><br/> IMPROVEMENT',
-
         call: "ZADZWOŃ",
         mail: "NAPISZ E-MAIL",
         meet: "UMÓW SPOTKANIE",
@@ -869,10 +903,8 @@
         ext: "TELEFON WEW.",
         aboutBtn: "O MNIE",
         portfolioBtn: "PORTFOLIO",
-
         sys: "SYSTEM STATUS: OPTIMAL.",
         hint: "Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.",
-
         aboutTitle: "O MNIE",
         aboutSub: "Lean + praktyka na hali. Prosto, szybko, skutecznie.",
         aboutLead: "Koordynuję projekty CI w DanCake Polonia — łączę standardy, dane i realne wdrożenia na produkcji.",
@@ -880,7 +912,7 @@
           "Standaryzacja pracy, szkolenia, matryce umiejętności i wdrożenia nowych osób.",
           "Analiza strat, OEE, przestoje: od danych do decyzji (bez korpo-teorii).",
           "SMED / przezbrojenia: skrócenie czasu + stabilny start produkcji.",
-          "Higiena i organizacja pracy: checklisty, CAPA/PDCA, weryfikacja skuteczności."
+          "Higiena i organizacja pracy: checklisty, CAPA/PDCA, weryfikfikacja skuteczności."
         ],
         aboutChips: ["LEAN", "OEE", "SMED", "SOP", "DATA", "PDCA"],
         quickTitle: "SZYBKO",
@@ -891,7 +923,6 @@
         kNote: "NOTE",
         vNote: "Standaryzacja • dane • szkolenia",
         teamNote: "Tryb TEAM aktywny: widoczne dodatkowe informacje wewnętrzne. Użyj linku public dla osób z zewnątrz.",
-
         portTitle: "PORTFOLIO",
         portSub: "Wybrane inicjatywy (z KPI). Kliknij „Szczegóły”, żeby zobaczyć opis.",
         qrTitle: "QR DO STRONY",
@@ -904,13 +935,11 @@
         copied: "Skopiowane ✅",
         copyFail: "Nie mogę skopiować automatycznie."
       },
-
       en: {
         modePublic: "PUBLIC",
         modeTeam: "TEAM",
         lang: "LANG",
         role: 'CONTINUOUS <span class="mut">IMPROVEMENT</span><br/> COORDINATOR',
-
         call: "CALL",
         mail: "EMAIL",
         meet: "BOOK A MEETING",
@@ -920,10 +949,8 @@
         ext: "EXTENSION",
         aboutBtn: "ABOUT",
         portfolioBtn: "PORTFOLIO",
-
         sys: "SYSTEM STATUS: OPTIMAL.",
         hint: "Tip: QR bottom-right. TEAM mode: add ?team=1 to the URL.",
-
         aboutTitle: "ABOUT",
         aboutSub: "Lean + shop-floor execution. Simple, fast, effective.",
         aboutLead: "I run CI initiatives at DanCake Polonia — combining standards, data and real implementation on the floor.",
@@ -942,7 +969,6 @@
         kNote: "NOTE",
         vNote: "Standards • data • training",
         teamNote: "TEAM mode active: extra internal details are visible. Use the public link for external contacts.",
-
         portTitle: "PORTFOLIO",
         portSub: "Selected initiatives (with KPIs). Tap “Details” for the full description.",
         qrTitle: "QR TO THIS PAGE",
@@ -957,9 +983,6 @@
       }
     };
 
-    // -----------------------------
-    // Portfolio DATA
-    // -----------------------------
     const PROJECTS = [
       {
         id: "skills",
@@ -1005,51 +1028,6 @@
           pl: "Źródła danych (PLC/HMI/sensory), klasyfikacja przestojów i dashboard pilotażowy pod kierownictwo.",
           en: "Data sources (PLC/HMI/sensors), downtime taxonomy and a pilot dashboard for leadership."
         }
-      },
-      {
-        id: "smed",
-        tags: ["LEAN","SMED"],
-        kpi: { pl: "SMED −X min", en: "SMED −X min" },
-        title: { pl: "SMED / przezbrojenia & standardy", en: "SMED / changeovers & standards" },
-        desc:  { pl: "Skracanie przezbrojeń i stabilne starty produkcji.", en: "Shorter changeovers and stable production starts." },
-        case_public: {
-          pl: "Standaryzacja przezbrojeń: rozpiska kroków, role, przygotowanie, kontrola startu.",
-          en: "Changeover standardization: steps, roles, prep and start-up control."
-        },
-        case_team: {
-          pl: "Baza danych przezbrojeń (linie 6/7), analizy strat czasu i działania doskonalące.",
-          en: "Changeover database (lines 6/7), time-loss analysis and improvement actions."
-        }
-      },
-      {
-        id: "hygiene",
-        tags: ["QUALITY","HYGIENE","PDCA"],
-        kpi: { pl: "CAPA ↑", en: "CAPA ↑" },
-        title: { pl: "Higiena & organizacja pracy (CAPA/PDCA)", en: "Hygiene & organization (CAPA/PDCA)" },
-        desc:  { pl: "Plany naprawcze, audyty i stabilizacja standardów.", en: "Corrective plans, audits and stable standards." },
-        case_public: {
-          pl: "Praca na obszarach wrażliwych: standardy higieny, organizacja pracy i działania naprawcze.",
-          en: "Sensitive areas: hygiene standards, work organization and corrective actions."
-        },
-        case_team: {
-          pl: "PDCA + checklisty, odpowiedzialności i weryfikacja skuteczności działań w czasie.",
-          en: "PDCA + checklists, ownership and effectiveness verification over time."
-        }
-      },
-      {
-        id: "ai",
-        tags: ["AI","DATA","AUTOMATION"],
-        kpi: { pl: "AUTOMATYZACJA ↑", en: "AUTOMATION ↑" },
-        title: { pl: "Digitalizacja + AI (Workspace/Gemini)", en: "Digitalization + AI (Workspace/Gemini)" },
-        desc:  { pl: "Automatyzacje, formularze, dashboardy, wsparcie AI w produkcji.", en: "Automations, forms, dashboards, AI support in production." },
-        case_public: {
-          pl: "Usprawnienia oparte o narzędzia biurowe i automatyzacje: mniej ręcznej roboty, więcej danych i spójności.",
-          en: "Improvements using office tools and automations: less manual work, more data and consistency."
-        },
-        case_team: {
-          pl: "Szkolenia, prompt-bazy, wdrożenia i integracje — rozwiązania “szyte pod halę”.",
-          en: "Training, prompt libraries, deployments and integrations — solutions tailored to the shop floor."
-        }
       }
     ];
 
@@ -1067,48 +1045,50 @@
       byId("teamNote").style.display = isTeam ? "" : "none";
     }
 
-    // -----------------------------
-    // Modal helpers
-    // -----------------------------
+    // -------- Modal animation helpers (no flicker) --------
     function openModal(backEl){
       backEl.style.display = "block";
       backEl.setAttribute("aria-hidden","false");
       document.body.style.overflow = "hidden";
+
+      // allow CSS to catch up
+      requestAnimationFrame(()=> backEl.classList.add("show"));
+      backEl.classList.remove("hide");
     }
+
     function closeModal(backEl){
-      backEl.style.display = "none";
+      backEl.classList.add("hide");
+      backEl.classList.remove("show");
       backEl.setAttribute("aria-hidden","true");
-      document.body.style.overflow = "";
+
+      const onEnd = (e)=>{
+        if(e.target !== backEl) return;
+        backEl.style.display = "none";
+        backEl.classList.remove("hide");
+        backEl.removeEventListener("transitionend", onEnd);
+        document.body.style.overflow = "";
+      };
+      backEl.addEventListener("transitionend", onEnd);
     }
+
     function bindModal(backId, closeBtnId){
       const back = byId(backId);
       const closeBtn = byId(closeBtnId);
-
       closeBtn.addEventListener("click", ()=> closeModal(back));
       back.addEventListener("click", (e)=>{ if(e.target===back) closeModal(back); });
-
       return back;
     }
 
-    // Escape closes the top-most open modal
     function closeTopModal(){
       const ids = ["projBack","qrBack","portBack","aboutBack"];
       for(const id of ids){
         const el = byId(id);
-        if(el.style.display === "block"){
-          closeModal(el);
-          return true;
-        }
+        if(el.style.display === "block"){ closeModal(el); return true; }
       }
       return false;
     }
-    document.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape"){ closeTopModal(); }
-    });
+    document.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeTopModal(); });
 
-    // -----------------------------
-    // Filters + Projects
-    // -----------------------------
     function renderFilters(lang){
       const wrap = byId("filters");
       wrap.innerHTML = "";
@@ -1232,9 +1212,6 @@
       });
     }
 
-    // -----------------------------
-    // About render
-    // -----------------------------
     function renderAboutBullets(list){
       const ul = byId("aboutBullets");
       ul.innerHTML = "";
@@ -1255,16 +1232,12 @@
       });
     }
 
-    // -----------------------------
-    // QR (lightweight generator)
-    // -----------------------------
+    // QR generator (lightweight)
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
       if(bytes.length > 55) return { ok:false };
-
       const size = 29;
       const m = Array.from({length:size}, () => Array(size).fill(null));
-
       function placeFinder(r,c){
         for(let y=-1;y<=7;y++){
           for(let x=-1;x<=7;x++){
@@ -1277,12 +1250,10 @@
         }
       }
       placeFinder(0,0); placeFinder(0,size-7); placeFinder(size-7,0);
-
       for(let i=8;i<size-8;i++){
         m[6][i] = (i%2===0)?1:0;
         m[i][6] = (i%2===0)?1:0;
       }
-
       function placeAlign(r,c){
         for(let y=-2;y<=2;y++){
           for(let x=-2;x<=2;x++){
@@ -1293,7 +1264,6 @@
         }
       }
       placeAlign(22,22);
-
       const fmt = [
         [8,0],[8,1],[8,2],[8,3],[8,4],[8,5],[8,7],[8,8],[7,8],
         [5,8],[4,8],[3,8],[2,8],[1,8],[0,8],
@@ -1361,9 +1331,6 @@
       }
     }
 
-    // -----------------------------
-    // APPLY LANGUAGE
-    // -----------------------------
     function applyLanguage(lang){
       currentLang = lang;
       localStorage.setItem("lang", lang);
@@ -1385,7 +1352,6 @@
       byId("sysLine").textContent = t.sys;
       byId("hintLine").textContent = t.hint;
 
-      // About modal content
       byId("tAboutTitle").textContent = t.aboutTitle;
       byId("tAboutSub").textContent = t.aboutSub;
       byId("tAboutLead").textContent = t.aboutLead;
@@ -1402,11 +1368,9 @@
 
       byId("teamNote").textContent = t.teamNote;
 
-      // Portfolio modal content
       byId("tPortTitle").textContent = t.portTitle;
       byId("tPortSub").textContent = t.portSub;
 
-      // QR modal labels
       byId("tQrTitle").textContent = t.qrTitle;
       byId("tQrSub").textContent = t.qrSub;
 
@@ -1426,25 +1390,18 @@
       renderProjects(lang);
     }
 
-    // -----------------------------
-    // INIT
-    // -----------------------------
     (function init(){
       byId("y").textContent = new Date().getFullYear();
-
       applyMode();
 
-      // set links
       byId("btnCall").href = `tel:${CONTACT.phone}`;
       byId("btnMail").href = `mailto:${CONTACT.email}`;
       byId("btnMeet").href = CONTACT.booking;
       byId("btnLinkedIn").href = CONTACT.linkedin;
       byId("btnExt").href = `tel:${CONTACT.ext}`;
 
-      // vCard dynamic (public/team)
       byId("btnVcard").href = isTeam ? CONTACT.vcardTeam : CONTACT.vcardPublic;
 
-      // tracking
       byId("btnCall").addEventListener("click", ()=> trackEvent("call"));
       byId("btnMail").addEventListener("click", ()=> trackEvent("email"));
       byId("btnMeet").addEventListener("click", ()=> trackEvent("book"));
@@ -1452,13 +1409,11 @@
       byId("btnVcard").addEventListener("click", ()=> trackEvent("vcard"));
       if (isTeam) byId("btnExt").addEventListener("click", ()=> trackEvent("extension"));
 
-      // bind modals
       const aboutBack = bindModal("aboutBack","closeAbout");
       const portBack  = bindModal("portBack","closePort");
       const qrBack    = bindModal("qrBack","closeQr");
-      const projBack  = bindModal("projBack","closeProj");
+      bindModal("projBack","closeProj");
 
-      // open about/portfolio
       byId("btnAbout").addEventListener("click", ()=>{
         openModal(aboutBack);
         trackEvent("about_open");
@@ -1468,7 +1423,6 @@
         trackEvent("portfolio_open");
       });
 
-      // QR modal
       const cleanUrl = location.href.replace(/#.*$/,'');
       byId("pageUrl").textContent = cleanUrl;
 
@@ -1490,7 +1444,6 @@
         }
       });
 
-      // language
       const urlLang = qs("lang");
       const stored = localStorage.getItem("lang");
       const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
@@ -1499,13 +1452,7 @@
       byId("btnPL").addEventListener("click", ()=>{ applyLanguage("pl"); trackEvent("lang_pl"); });
       byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
 
-      // init lang render
       applyLanguage(lang);
-
-      // close modals on background tap (handled in bindModal)
-      // project modal uses openModal now, so it also locks scroll
-      // ensure project modal does not break scroll lock nesting
-      // (we keep it simple: always lock when a modal opens; unlock on close)
     })();
   </script>
 </body>
