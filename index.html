@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Mateusz Uraz — NFC</title>
-  <meta name="description" content="Mateusz Uraz — Continuous Improvement. NFC business card + portfolio." />
+  <meta name="description" content="Mateusz Uraz — Koordynator ds. Ciągłego Doskonalenia / Continuous Improvement. Wizytówka NFC + QR + vCard." />
   <meta name="theme-color" content="#C9FF3B" />
 
   <!-- iOS “app-like” -->
@@ -18,10 +18,6 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
 
-  <!-- Privacy analytics (GoatCounter) — PODMIEŃ TWOJ_KOD -->
-  <script data-goatcounter="https://TWOJ_KOD.goatcounter.com/count"
-          async src="//gc.zgo.at/count.js"></script>
-
   <style>
     :root{
       --lime:#C9FF3B;
@@ -30,9 +26,6 @@
       --shadow2: 0 10px 24px rgba(10,15,11,.18);
       --pillRadius: 18px;
       --circle: 48px;
-      --glass: rgba(255,255,255,.82);
-      --glass2: rgba(255,255,255,.72);
-      --mut: rgba(10,15,11,.72);
     }
 
     *{ box-sizing:border-box; }
@@ -44,6 +37,7 @@
       color: var(--ink);
       overflow-x:hidden;
     }
+
     body::before{
       content:"";
       position:fixed; inset:0;
@@ -62,90 +56,29 @@
       place-items:center;
       padding: 18px 14px 24px;
     }
+
     .screen{
-      width: min(440px, 94vw);
+      width: min(430px, 94vw);
       border-radius: 34px;
       position:relative;
-      padding: 20px 18px 18px;
+      padding: 22px 18px 18px;
     }
 
-    /* top bar */
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.30);
-      border: 1px solid rgba(10,15,11,.16);
-      box-shadow: 0 10px 20px rgba(10,15,11,.10);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      font-size: 12px;
-      user-select:none;
-    }
-    .switches{
-      display:flex;
-      gap: 10px;
-      align-items:center;
-    }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 9px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.30);
-      border: 1px solid rgba(10,15,11,.16);
-      box-shadow: 0 10px 20px rgba(10,15,11,.10);
-      user-select:none;
-    }
-    .seg{
-      display:flex;
-      border-radius: 999px;
-      overflow:hidden;
-      border: 1px solid rgba(10,15,11,.18);
-      background: rgba(255,255,255,.35);
-    }
-    .seg button{
-      border:0;
-      background: transparent;
-      padding: 8px 10px;
-      font-weight: 900;
-      letter-spacing: .5px;
-      text-transform: uppercase;
-      font-size: 12px;
-      cursor:pointer;
-      color: var(--ink);
-    }
-    .seg button.active{
-      background: rgba(255,255,255,.78);
-    }
-
-    /* logo */
     .logo{
       display:flex;
       align-items:center;
       justify-content:center;
-      margin: 8px 0 12px;
+      margin-top: 2px;
+      margin-bottom: 16px;
       user-select:none;
     }
     .logo img{
-      height: 64px;
+      height: 66px;
       width:auto;
       object-fit:contain;
       filter: drop-shadow(0 10px 16px rgba(10,15,11,.10));
     }
 
-    /* name block */
     .nameBlock{ text-align:center; margin: 6px 0 10px; }
     .nameBig{
       margin:0;
@@ -167,14 +100,14 @@
     }
     .roleLine .mut{ opacity:.9; font-weight:800; }
 
-    /* buttons */
-    .btns{ display:grid; gap: 14px; margin-top: 22px; margin-bottom: 14px; }
+    .btns{ display:grid; gap: 14px; margin-top: 24px; margin-bottom: 16px; }
+
     .pill{
       display:flex;
       align-items:center;
       gap: 12px;
       padding: 12px 14px 12px 12px;
-      background: var(--glass);
+      background: rgba(255,255,255,.86);
       border: 1px solid rgba(10,15,11,.10);
       border-radius: var(--pillRadius);
       box-shadow: var(--shadow2);
@@ -188,6 +121,7 @@
       transition: transform .12s ease;
     }
     .pill:active{ transform: scale(.988); }
+
     .iconCircle{
       width: var(--circle);
       height: var(--circle);
@@ -201,29 +135,27 @@
     }
     .ico{ width: 22px; height: 22px; display:block; }
     .label{ flex:1 1 auto; font-size: 16px; }
-    .subLabel{
-      font-weight: 900;
-      font-size: 12px;
-      opacity: .72;
-      letter-spacing: .4px;
-      text-transform:none;
-    }
 
-    /* footer */
     .footer{
-      margin-top: 14px;
+      margin-top: 16px;
       display:flex;
       align-items:flex-end;
       justify-content:space-between;
       gap: 10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","CourierNew", monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       text-transform: uppercase;
       letter-spacing: .5px;
       font-weight: 800;
       opacity: .82;
       font-size: 12px;
     }
-    .rightTools{ display:flex; align-items:flex-end; gap: 10px; }
+
+    .rightTools{
+      display:flex;
+      align-items:flex-end;
+      gap: 10px;
+    }
+
     .toolBtn{
       display:inline-flex;
       align-items:center;
@@ -239,6 +171,7 @@
       -webkit-tap-highlight-color: transparent;
       user-select:none;
     }
+
     .nfc{
       display:flex;
       align-items:center;
@@ -247,6 +180,7 @@
       opacity: .95;
     }
     .nfc svg{ width: 22px; height:22px; }
+
     .hint{
       text-align:center;
       margin-top: 10px;
@@ -257,7 +191,7 @@
     /* sections */
     .section{ margin-top: 18px; padding-top: 12px; }
     .card{
-      background: var(--glass2);
+      background: rgba(255,255,255,.78);
       border: 1px solid rgba(10,15,11,.10);
       border-radius: 22px;
       box-shadow: var(--shadow2);
@@ -278,121 +212,40 @@
       font-size: 14.5px;
     }
 
-    /* portfolio */
-    .filters{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .tag{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(10,15,11,.16);
-      background: rgba(255,255,255,.55);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      font-size: 11.5px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .tag.active{
-      background: rgba(255,255,255,.86);
-    }
-
-    .grid{
+    .grid2{
       display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 12px;
     }
+    @media (max-width: 420px){
+      .grid2{ grid-template-columns: 1fr; }
+    }
+
     .proj{
       background: rgba(10,15,11,.05);
       border: 1px solid rgba(10,15,11,.10);
       border-radius: 18px;
       padding: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
     }
-    .projTop{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 10px;
-    }
-    .projTitle{
-      font-weight: 1000;
-      letter-spacing: .2px;
-      line-height:1.2;
-    }
-    .kpi{
-      flex: 0 0 auto;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    .proj b{ display:block; margin-bottom:6px; }
+    .proj span{ display:block; color: rgba(10,15,11,.72); font-size: 13.8px; line-height:1.45; }
+    .proj a{
+      display:inline-block;
+      margin-top: 10px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: .6px;
-      font-size: 12px;
-      padding: 7px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(10,15,11,.16);
-      background: rgba(255,255,255,.60);
-      white-space:nowrap;
-    }
-    .projDesc{
-      color: var(--mut);
-      font-size: 13.8px;
-      line-height:1.45;
-      margin:0;
-    }
-    .projMeta{
-      display:flex;
-      flex-wrap:wrap;
-      gap: 8px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .miniTags{ display:flex; gap: 8px; flex-wrap:wrap; }
-    .mini{
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-      opacity:.85;
-      border: 1px solid rgba(10,15,11,.14);
-      background: rgba(255,255,255,.45);
-      padding: 6px 8px;
-      border-radius: 999px;
-    }
-    .actions{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 2px;
-    }
-    .btnSmall{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
+      letter-spacing: .5px;
+      font-size: 12.5px;
+      color: var(--ink);
+      text-decoration:none;
       padding: 10px 12px;
       border-radius: 999px;
       border: 1px solid rgba(10,15,11,.16);
       background: rgba(255,255,255,.55);
-      font-weight: 900;
-      text-transform: uppercase;
-      letter-spacing: .5px;
-      font-size: 12px;
-      cursor:pointer;
-      text-decoration:none;
-      color: var(--ink);
-      user-select:none;
     }
 
-    /* modal shared */
+    /* QR modal */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(10,15,11,.40);
@@ -402,7 +255,7 @@
       z-index: 50;
     }
     .modal{
-      width: min(440px, 94vw);
+      width: min(420px, 94vw);
       border-radius: 22px;
       background: rgba(255,255,255,.92);
       border: 1px solid rgba(10,15,11,.12);
@@ -426,13 +279,23 @@
       font-weight: 900;
       cursor:pointer;
     }
+    .qrWrap{
+      display:grid;
+      place-items:center;
+      background:#fff;
+      border: 1px solid rgba(10,15,11,.12);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 10px;
+    }
+    canvas#qr{ width: 240px; height:240px; image-rendering: pixelated; }
     .mono{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
       font-size: 12px;
       color: rgba(10,15,11,.65);
       word-break: break-all;
       line-height:1.35;
-      margin: 8px 0 10px;
+      margin-bottom: 10px;
     }
     .copy{
       width:100%;
@@ -446,25 +309,6 @@
       text-transform: uppercase;
       cursor:pointer;
     }
-
-    /* QR canvas */
-    .qrWrap{
-      display:grid;
-      place-items:center;
-      background:#fff;
-      border: 1px solid rgba(10,15,11,.12);
-      border-radius: 18px;
-      padding: 14px;
-      margin-bottom: 10px;
-    }
-    canvas#qr{ width: 240px; height:240px; image-rendering: pixelated; }
-
-    .mutedLine{
-      font-size: 12.5px;
-      color: rgba(10,15,11,.62);
-      line-height:1.45;
-      margin: 8px 0 0;
-    }
   </style>
 </head>
 
@@ -472,58 +316,41 @@
   <div class="wrap">
     <main class="screen" role="main">
 
-      <div class="topbar">
-        <div class="badge" id="modeBadge">PUBLIC</div>
-
-        <div class="switches">
-          <div class="chip">
-            <span style="font-weight:900; letter-spacing:.5px; text-transform:uppercase; font-size:12px;" id="langLabel">LANG</span>
-            <div class="seg" role="group" aria-label="Language selector">
-              <button id="btnPL" type="button">PL</button>
-              <button id="btnEN" type="button">EN</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <!-- LOGO: upewnij się, że plik leży obok index.html -->
       <div class="logo">
         <img src="dcpllogo_transparent_trim.png" alt="Dan Cake Polonia" />
       </div>
 
       <section class="nameBlock">
         <h1 class="nameBig">[MATEUSZ URAZ]</h1>
-        <div class="roleLine" id="roleLine">
-          KOORDYNATOR <span class="mut">CONTINUOUS</span><br/> IMPROVEMENT
+        <div class="roleLine">
+          KOORDYNATOR <span class="mut">CONTINUOUS</span><br/>
+          IMPROVEMENT
         </div>
       </section>
 
-      <section class="btns" aria-label="Actions">
-        <a class="pill" id="btnCall" href="tel:+48452432235">
+      <section class="btns" aria-label="Akcje kontaktowe">
+        <a class="pill" href="tel:+48452432235">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M6.5 3.5h4L12 6l-2 2c1.2 2.2 3 4 5.2 5.2l2-2 2.5 1.5v4c0 .8-.6 1.5-1.4 1.6-8.1 1-14.8-5.7-13.8-13.8C5 4.1 5.7 3.5 6.5 3.5Z" stroke="#0A0F0B" stroke-width="1.9" stroke-linejoin="round"/>
             </svg>
           </span>
-          <div style="display:flex; flex-direction:column; gap:2px;">
-            <span class="label" id="tCall">ZADZWOŃ</span>
-            <span class="subLabel" id="tCallSub">+48 452 432 235</span>
-          </div>
+          <span class="label">ZADZWOŃ</span>
         </a>
 
-        <a class="pill" id="btnMail" href="mailto:m.uraz@dancake.pl">
+        <a class="pill" href="mailto:m.uraz@dancake.pl">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M4.5 7.5h15v9h-15v-9Z" stroke="#0A0F0B" stroke-width="1.9" />
               <path d="m5.2 8.2 6.8 5 6.8-5" stroke="#0A0F0B" stroke-width="1.9" stroke-linecap="round"/>
             </svg>
           </span>
-          <div style="display:flex; flex-direction:column; gap:2px;">
-            <span class="label" id="tMail">NAPISZ E-MAIL</span>
-            <span class="subLabel">m.uraz@dancake.pl</span>
-          </div>
+          <span class="label">NAPISZ E-MAIL</span>
         </a>
 
-        <a class="pill" id="btnLinkedIn" href="https://www.linkedin.com/in/YOUR_HANDLE" target="_blank" rel="noopener">
+        <!-- LinkedIn: podmień na swój link, jeśli chcesz -->
+        <a class="pill" href="https://www.linkedin.com/" target="_blank" rel="noopener">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M6.5 9.5V18" stroke="#0A0F0B" stroke-width="2.1" stroke-linecap="round"/>
@@ -532,57 +359,43 @@
               <path d="M10.3 11v7" stroke="#0A0F0B" stroke-width="2.1" stroke-linecap="round"/>
             </svg>
           </span>
-          <span class="label" id="tLinkedIn">LINKEDIN</span>
+          <span class="label">LINKEDIN</span>
         </a>
 
-        <!-- vCard dynamic: public/team -->
-        <a class="pill" id="btnVcard" href="./mateusz-uraz_public.vcf">
+        <a class="pill" href="./mateusz-uraz.vcf">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M7 4h10v16H7V4Z" stroke="#0A0F0B" stroke-width="1.9"/>
               <path d="M9 8h6M9 11h6M9 14h4" stroke="#0A0F0B" stroke-width="1.9" stroke-linecap="round"/>
             </svg>
           </span>
-          <span class="label" id="tVcard">ZAPISZ KONTAKT</span>
+          <span class="label">ZAPISZ KONTAKT</span>
         </a>
 
-        <!-- TEAM ONLY -->
-        <a class="pill" id="btnExt" href="tel:7441" style="display:none;">
-          <span class="iconCircle" aria-hidden="true">
-            <svg class="ico" viewBox="0 0 24 24" fill="none">
-              <path d="M6 7h12M6 12h12M6 17h8" stroke="#0A0F0B" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <div style="display:flex; flex-direction:column; gap:2px;">
-            <span class="label" id="tExt">TELEFON WEW.</span>
-            <span class="subLabel" id="tExtSub">7441</span>
-          </div>
-        </a>
-
-        <a class="pill" href="#about" id="btnAbout">
+        <a class="pill" href="#o-mnie">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="#0A0F0B" stroke-width="2"/>
               <path d="M4.5 20c1.8-4 5-6 7.5-6s5.7 2 7.5 6" stroke="#0A0F0B" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </span>
-          <span class="label" id="tAboutBtn">O MNIE</span>
+          <span class="label">O MNIE</span>
         </a>
 
-        <a class="pill" href="#portfolio" id="btnPortfolio">
+        <a class="pill" href="#projekty">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M8 7h8M8 11h8M8 15h5" stroke="#0A0F0B" stroke-width="2" stroke-linecap="round"/>
               <path d="M6 4h12v16H6V4Z" stroke="#0A0F0B" stroke-width="2"/>
             </svg>
           </span>
-          <span class="label" id="tPortfolioBtn">PORTFOLIO</span>
+          <span class="label">MOJE PROJEKTY</span>
         </a>
       </section>
 
       <footer class="footer">
         <div>
-          <span id="sysLine">SYSTEM STATUS: OPTIMAL.</span><br/>
+          SYSTEM STATUS: OPTIMAL.<br/>
           © <span id="y"></span> DAN CAKE.
         </div>
 
@@ -600,23 +413,64 @@
         </div>
       </footer>
 
-      <div class="hint" id="hintLine">
-        Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.
+      <div class="hint">
+        Tip: QR w prawym dolnym rogu. Dodaj stronę do ekranu głównego i wygląda jak apka.
       </div>
 
-      <section class="section" id="about">
+      <!-- O MNIE -->
+      <section class="section" id="o-mnie">
         <div class="card">
-          <div class="h" id="tAboutTitle">O MNIE</div>
-          <p class="p" id="tAboutText"></p>
-          <p class="mutedLine" id="teamNote" style="display:none;"></p>
+          <div class="h">O MNIE</div>
+          <p class="p">
+            Koordynator ds. Ciągłego Doskonalenia w DanCake Polonia. Łączę Lean z praktyką na hali:
+            standaryzacja pracy, eliminacja strat, budowa prostych systemów danych i szkoleń, które realnie pomagają zespołom.
+            Stawiam na rozwiązania “proste do wdrożenia” — ale dopracowane i skuteczne.
+          </p>
         </div>
       </section>
 
-      <section class="section" id="portfolio">
+      <!-- PROJEKTY -->
+      <section class="section" id="projekty">
         <div class="card">
-          <div class="h" id="tPortTitle">PORTFOLIO</div>
-          <div class="filters" id="filters"></div>
-          <div class="grid" id="projectsGrid"></div>
+          <div class="h">MOJE PROJEKTY</div>
+
+          <div class="grid2">
+            <div class="proj">
+              <b>Matryca umiejętności & poliwalencja</b>
+              <span>Oceny, rozwój kompetencji, planowanie wdrożeń i szkolenia na liniach.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Matryca%20umiej%C4%99tno%C5%9Bci">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>Instrukcje pracy (PDF/Video)</b>
+              <span>Standaryzacja krok-po-kroku + materiały szkoleniowe do wdrożeń.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Instrukcje%20pracy">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>OEE / straty / raportowanie zmianowe</b>
+              <span>Analiza przestojów i wydajności + czytelny dashboard dla decyzji.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20OEE%20i%20raportowanie">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>SMED / przezbrojenia & standardy</b>
+              <span>Baza danych przezbrojeń, skracanie czasu, stabilizacja startów produkcji.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20SMED%20i%20standaryzacja">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>Higiena & organizacja pracy (CAPA/PDCA)</b>
+              <span>Plany naprawcze, audyty, wdrożenia działań w obszarach wrażliwych.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Higiena%20i%20CAPA%2FPDCA">Zapytaj</a>
+            </div>
+
+            <div class="proj">
+              <b>Digitalizacja + AI (Workspace/Gemini)</b>
+              <span>Automatyzacje, formularze, dashboardy, wsparcie AI w produkcji.</span>
+              <a href="mailto:m.uraz@dancake.pl?subject=Projekt%20-%20Digitalizacja%20i%20AI">Zapytaj</a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -624,10 +478,10 @@
   </div>
 
   <!-- QR MODAL -->
-  <div class="modalBack" id="qrBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="QR">
+  <div class="modalBack" id="modalBack" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="QR wizytówki">
       <div class="modalTop">
-        <b id="tQrTitle">QR</b>
+        <b>QR do tej wizytówki</b>
         <button class="x" id="closeQr">Zamknij</button>
       </div>
       <div class="qrWrap">
@@ -638,359 +492,15 @@
     </div>
   </div>
 
-  <!-- PROJECT MODAL -->
-  <div class="modalBack" id="projBack" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Project details">
-      <div class="modalTop">
-        <b id="projTitle">PROJECT</b>
-        <button class="x" id="closeProj">Zamknij</button>
-      </div>
-      <div class="mono" id="projKpi">KPI</div>
-      <p style="margin:0; line-height:1.55; color:rgba(10,15,11,.80);" id="projBody"></p>
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        <a class="btnSmall" id="projMail" href="mailto:m.uraz@dancake.pl">Kontakt</a>
-        <button class="btnSmall" id="projCopy">Kopiuj opis</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // -----------------------------
-    // CONFIG
-    // -----------------------------
-    const CONTACT = {
-      phone: "+48452432235",
-      ext: "7441",
-      email: "m.uraz@dancake.pl",
-      linkedin: "https://www.linkedin.com/in/YOUR_HANDLE", // <-- PODMIEŃ
-      company: "DanCake Polonia Spółka z o.o.",
-      address: "ul. Transportowców 15, 32-500 Chrzanów",
-      vcardPublic: "./mateusz-uraz_public.vcf",
-      vcardTeam: "./mateusz-uraz_team.vcf"
-    };
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-    // -----------------------------
-    // MODE (public / team)
-    // -----------------------------
-    const qs = (k) => new URLSearchParams(location.search).get(k);
-    const isTeam = (qs("team") === "1");
-    const byId = (id) => document.getElementById(id);
-
-    // -----------------------------
-    // PRIVACY ANALYTICS (events)
-    <script data-goatcounter="https://mateuszuraz.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-    // GoatCounter: custom events via goatcounter.count({path:"/event/..."})
-    // (działa jeśli w head masz snippet i licznik jest aktywny)
-    // -----------------------------
-    // -----------------------------
-    // I18N
-    // -----------------------------
-    const I18N = {
-      pl: {
-        modePublic: "PUBLIC",
-        modeTeam: "TEAM",
-        lang: "JĘZYK",
-        role: 'KOORDYNATOR <span class="mut">CONTINUOUS</span><br/> IMPROVEMENT',
-        call: "ZADZWOŃ",
-        mail: "NAPISZ E-MAIL",
-        linkedin: "LINKEDIN",
-        vcard: "ZAPISZ KONTAKT",
-        ext: "TELEFON WEW.",
-        aboutBtn: "O MNIE",
-        portfolioBtn: "PORTFOLIO",
-        sys: "SYSTEM STATUS: OPTIMAL.",
-        hint: "Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.",
-        aboutTitle: "O MNIE",
-        aboutText:
-          "Koordynator ds. Ciągłego Doskonalenia w DanCake Polonia. Łączę Lean z praktyką na hali: standaryzacja pracy, eliminacja strat, szkolenia i proste systemy danych. Stawiam na rozwiązania szybkie do wdrożenia — ale dopracowane i skuteczne.",
-        teamNote:
-          "Tryb TEAM aktywny: pokazuję dodatkowe informacje (np. telefon wewn.). Użyj publicznego linku dla osób z zewnątrz.",
-        portTitle: "PORTFOLIO",
-        qrTitle: "QR DO STRONY",
-        close: "Zamknij",
-        copyLink: "Kopiuj link",
-        details: "Szczegóły",
-        contact: "Kontakt",
-        copyDesc: "Kopiuj opis",
-        copied: "Skopiowane ✅",
-        copyFail: "Nie mogę skopiować automatycznie."
-      },
-      en: {
-        modePublic: "PUBLIC",
-        modeTeam: "TEAM",
-        lang: "LANG",
-        role: 'CONTINUOUS <span class="mut">IMPROVEMENT</span><br/> COORDINATOR',
-        call: "CALL",
-        mail: "EMAIL",
-        linkedin: "LINKEDIN",
-        vcard: "SAVE CONTACT",
-        ext: "EXTENSION",
-        aboutBtn: "ABOUT",
-        portfolioBtn: "PORTFOLIO",
-        sys: "SYSTEM STATUS: OPTIMAL.",
-        hint: "Tip: QR bottom-right. TEAM mode: add ?team=1 to the URL.",
-        aboutTitle: "ABOUT",
-        aboutText:
-          "Continuous Improvement Coordinator at DanCake Polonia. I combine Lean with real shop-floor execution: work standardization, waste removal, training and lightweight data systems. I focus on solutions that are easy to deploy — but polished and effective.",
-        teamNote:
-          "TEAM mode active: extra internal details are visible (e.g., extension). Use the public link for external contacts.",
-        portTitle: "PORTFOLIO",
-        qrTitle: "QR TO THIS PAGE",
-        close: "Close",
-        copyLink: "Copy link",
-        details: "Details",
-        contact: "Contact",
-        copyDesc: "Copy summary",
-        copied: "Copied ✅",
-        copyFail: "Clipboard not available."
-      }
-    };
-
-    // -----------------------------
-    // Portfolio DATA (edytujesz KPI kiedy chcesz)
-    // -----------------------------
-    const PROJECTS = [
-      {
-        id: "skills",
-        tags: ["LEAN","TRAINING","HR"],
-        kpi: { pl: "POLIWALENCJA ↑", en: "MULTI-SKILL ↑" },
-        title: { pl: "Matryca umiejętności & poliwalencja", en: "Skills matrix & multi-skilling" },
-        desc:  { pl: "Oceny kompetencji + plan rozwoju i wdrożeń na liniach.", en: "Competency ratings + development & onboarding plan." },
-        case_public: {
-          pl: "Standaryzacja oceny kompetencji na liniach. Efekt: lepsze planowanie obsady, szybsze wdrożenia i klarowny rozwój ludzi.",
-          en: "Standardized skill assessment on production lines. Result: better staffing planning, faster onboarding and clear growth paths."
-        },
-        case_team: {
-          pl: "Wdrożenie matryc (old/new hall), zintegrowane z ocenami i planem szkoleń. Możliwy export do raportów zmianowych.",
-          en: "Rolled out matrices (old/new hall), integrated with scoring & training plan. Export-ready for shift reports."
-        }
-      },
-      {
-        id: "sop",
-        tags: ["LEAN","QUALITY","TRAINING"],
-        kpi: { pl: "STANDARD ↑", en: "STANDARD ↑" },
-        title: { pl: "Instrukcje pracy (PDF/Video)", en: "Work instructions (PDF/Video)" },
-        desc:  { pl: "Materiały krok-po-kroku, które realnie skracają wdrożenie.", en: "Step-by-step materials that shorten onboarding." },
-        case_public: {
-          pl: "Tworzenie instrukcji stanowiskowych i materiałów video. Cel: przewidywalna jakość, mniej błędów, szybsze wdrożenia.",
-          en: "Creating role-based SOPs and video guides. Goal: predictable quality, fewer errors, faster onboarding."
-        },
-        case_team: {
-          pl: "Format spójny dla hal/lin ii, checklisty + podział stref (suche/mokre). Integracja z planami czyszczeń.",
-          en: "Consistent format across halls/lines, checklists + dry/wet zoning. Integration with cleaning schedules."
-        }
-      },
-      {
-        id: "oee",
-        tags: ["DATA","LEAN","DASHBOARD"],
-        kpi: { pl: "OEE +X pp", en: "OEE +X pp" },
-        title: { pl: "OEE / straty / raportowanie zmianowe", en: "OEE / losses / shift reporting" },
-        desc:  { pl: "Dane operacyjne → wnioski → decyzje na produkcji.", en: "Operational data → insights → production decisions." },
-        case_public: {
-          pl: "Budowa prostego raportowania zmianowego i analizy strat. Cel: szybkie decyzje i widoczność przestojów.",
-          en: "Building shift reporting and loss analysis. Goal: fast decisions and visibility of downtime."
-        },
-        case_team: {
-          pl: "Źródła danych (PLC/HMI/sensory), klasyfikacja przestojów i dashboard pilotażowy pod kierownictwo.",
-          en: "Data sources (PLC/HMI/sensors), downtime taxonomy and a pilot dashboard for leadership."
-        }
-      },
-      {
-        id: "smed",
-        tags: ["LEAN","SMED"],
-        kpi: { pl: "SMED −X min", en: "SMED −X min" },
-        title: { pl: "SMED / przezbrojenia & standardy", en: "SMED / changeovers & standards" },
-        desc:  { pl: "Skracanie przezbrojeń i stabilne starty produkcji.", en: "Shorter changeovers and stable production starts." },
-        case_public: {
-          pl: "Standaryzacja przezbrojeń: rozpiska kroków, role, przygotowanie, kontrola startu.",
-          en: "Changeover standardization: steps, roles, prep and start-up control."
-        },
-        case_team: {
-          pl: "Baza danych przezbrojeń (linie 6/7), analizy strat czasu i działania doskonalące.",
-          en: "Changeover database (lines 6/7), time-loss analysis and improvement actions."
-        }
-      },
-      {
-        id: "hygiene",
-        tags: ["QUALITY","HYGIENE","PDCA"],
-        kpi: { pl: "CAPA ↑", en: "CAPA ↑" },
-        title: { pl: "Higiena & organizacja pracy (CAPA/PDCA)", en: "Hygiene & organization (CAPA/PDCA)" },
-        desc:  { pl: "Plany naprawcze, audyty i stabilizacja standardów.", en: "Corrective plans, audits and stable standards." },
-        case_public: {
-          pl: "Praca na obszarach wrażliwych: standardy higieny, organizacja pracy i działania naprawcze.",
-          en: "Sensitive areas: hygiene standards, work organization and corrective actions."
-        },
-        case_team: {
-          pl: "PDCA + checklisty, odpowiedzialności i weryfikacja skuteczności działań w czasie.",
-          en: "PDCA + checklists, ownership and effectiveness verification over time."
-        }
-      },
-      {
-        id: "ai",
-        tags: ["AI","DATA","AUTOMATION"],
-        kpi: { pl: "AUTOMATYZACJA ↑", en: "AUTOMATION ↑" },
-        title: { pl: "Digitalizacja + AI (Workspace/Gemini)", en: "Digitalization + AI (Workspace/Gemini)" },
-        desc:  { pl: "Automatyzacje, formularze, dashboardy, wsparcie AI w produkcji.", en: "Automations, forms, dashboards, AI support in production." },
-        case_public: {
-          pl: "Usprawnienia oparte o narzędzia biurowe i automatyzacje: mniej ręcznej roboty, więcej danych i spójności.",
-          en: "Improvements using office tools and automations: less manual work, more data and consistency."
-        },
-        case_team: {
-          pl: "Szkolenia, prompt-bazy, wdrożenia i integracje — rozwiązania “szyte pod halę”.",
-          en: "Training, prompt libraries, deployments and integrations — solutions tailored to the shop floor."
-        }
-      }
-    ];
-
-    // -----------------------------
-    // Filters
-    // -----------------------------
-    const ALL_TAGS = Array.from(new Set(PROJECTS.flatMap(p => p.tags))).sort();
-    let activeTag = "ALL";
-    let currentLang = "pl";
-
-    function setActiveLangButtons(lang){
-      byId("btnPL").classList.toggle("active", lang==="pl");
-      byId("btnEN").classList.toggle("active", lang==="en");
-    }
-
-    function applyMode(){
-      byId("btnExt").style.display = isTeam ? "" : "none";
-      byId("teamNote").style.display = isTeam ? "" : "none";
-    }
-
-    function renderFilters(lang){
-      const wrap = byId("filters");
-      wrap.innerHTML = "";
-      const tags = ["ALL", ...ALL_TAGS];
-      tags.forEach(t => {
-        const el = document.createElement("div");
-        el.className = "tag" + (t===activeTag ? " active" : "");
-        el.textContent = (t==="ALL" ? (lang==="pl" ? "WSZYSTKO" : "ALL") : t);
-        el.addEventListener("click", () => {
-          activeTag = t;
-          trackEvent("filter_" + (t==="ALL" ? "all" : t.toLowerCase()));
-          renderFilters(lang);
-          renderProjects(lang);
-        });
-        wrap.appendChild(el);
-      });
-    }
-
-    function projectMatches(p){
-      return activeTag==="ALL" || p.tags.includes(activeTag);
-    }
-
-    function openProjectModal(p, lang){
-      const title = p.title[lang];
-      const kpi = p.kpi[lang];
-      const body = (isTeam ? p.case_team[lang] : p.case_public[lang]);
-
-      byId("projTitle").textContent = title;
-      byId("projKpi").textContent = kpi;
-      byId("projBody").textContent = body;
-
-      byId("projMail").href =
-        `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + title)}`;
-
-      byId("projCopy").onclick = async () => {
-        try{
-          await navigator.clipboard.writeText(`${title}\n${kpi}\n\n${body}`);
-          alert(I18N[lang].copied);
-          trackEvent("project_copy");
-        }catch(e){
-          alert(I18N[lang].copyFail);
-        }
-      };
-
-      trackEvent("project_open_" + p.id);
-      byId("projBack").style.display = "grid";
-    }
-
-    function renderProjects(lang){
-      const grid = byId("projectsGrid");
-      grid.innerHTML = "";
-
-      PROJECTS.filter(projectMatches).forEach(p => {
-        const card = document.createElement("div");
-        card.className = "proj";
-
-        const top = document.createElement("div");
-        top.className = "projTop";
-
-        const left = document.createElement("div");
-        left.style.display = "flex";
-        left.style.flexDirection = "column";
-        left.style.gap = "4px";
-
-        const title = document.createElement("div");
-        title.className = "projTitle";
-        title.textContent = p.title[lang];
-
-        const desc = document.createElement("p");
-        desc.className = "projDesc";
-        desc.textContent = p.desc[lang];
-
-        left.appendChild(title);
-        left.appendChild(desc);
-
-        const kpi = document.createElement("div");
-        kpi.className = "kpi";
-        kpi.textContent = p.kpi[lang];
-
-        top.appendChild(left);
-        top.appendChild(kpi);
-
-        const meta = document.createElement("div");
-        meta.className = "projMeta";
-
-        const tagsWrap = document.createElement("div");
-        tagsWrap.className = "miniTags";
-        p.tags.slice(0,3).forEach(t=>{
-          const mt = document.createElement("div");
-          mt.className = "mini";
-          mt.textContent = t;
-          tagsWrap.appendChild(mt);
-        });
-
-        const actions = document.createElement("div");
-        actions.className = "actions";
-
-        const detailsBtn = document.createElement("button");
-        detailsBtn.className = "btnSmall";
-        detailsBtn.type = "button";
-        detailsBtn.textContent = I18N[lang].details;
-        detailsBtn.addEventListener("click", ()=> openProjectModal(p, lang));
-
-        const mailLink = document.createElement("a");
-        mailLink.className = "btnSmall";
-        mailLink.href =
-          `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + p.title[lang])}`;
-        mailLink.textContent = I18N[lang].contact;
-        mailLink.addEventListener("click", ()=> trackEvent("project_mail_" + p.id));
-
-        actions.appendChild(detailsBtn);
-        actions.appendChild(mailLink);
-
-        meta.appendChild(tagsWrap);
-        meta.appendChild(actions);
-
-        card.appendChild(top);
-        card.appendChild(meta);
-
-        grid.appendChild(card);
-      });
-    }
-
-    // -----------------------------
-    // QR (lightweight)
-    // -----------------------------
+    // QR generator (krótki URL działa najlepiej; GitHub Pages zwykle jest OK)
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
-      if(bytes.length > 55) return { ok:false };
+      if(bytes.length > 55) return { ok:false, reason:"URL za długi. Skróć (np. domena.pl/m)." };
 
-      const size = 29;
+      const size = 29; // version 3
       const m = Array.from({length:size}, () => Array(size).fill(null));
 
       function placeFinder(r,c){
@@ -1059,7 +569,7 @@
             const c=col-k;
             if(m[r][c]!==null) continue;
             let bit = (idx<stream.length) ? stream[idx++] : 0;
-            if(((r+c)&1)===0) bit ^= 1;
+            if(((r+c)&1)===0) bit ^= 1; // mask 0
             m[r][c]=bit;
           }
         }
@@ -1089,117 +599,27 @@
       }
     }
 
-    // -----------------------------
-    // APPLY LANGUAGE
-    // -----------------------------
-    function applyLanguage(lang){
-      currentLang = lang;
-      localStorage.setItem("lang", lang);
-
-      const t = I18N[lang];
-      byId("langLabel").textContent = t.lang;
-      byId("roleLine").innerHTML = t.role;
-
-      byId("tCall").textContent = t.call;
-      byId("tMail").textContent = t.mail;
-      byId("tLinkedIn").textContent = t.linkedin;
-      byId("tVcard").textContent = t.vcard;
-      byId("tExt").textContent = t.ext;
-      byId("tAboutBtn").textContent = t.aboutBtn;
-      byId("tPortfolioBtn").textContent = t.portfolioBtn;
-
-      byId("sysLine").textContent = t.sys;
-      byId("hintLine").textContent = t.hint;
-
-      byId("tAboutTitle").textContent = t.aboutTitle;
-      byId("tAboutText").textContent = t.aboutText;
-      byId("teamNote").textContent = t.teamNote;
-
-      byId("tPortTitle").textContent = t.portTitle;
-
-      byId("tQrTitle").textContent = t.qrTitle;
-      byId("closeQr").textContent = t.close;
-      byId("closeProj").textContent = t.close;
-      byId("copyLink").textContent = t.copyLink;
-      byId("projMail").textContent = t.contact;
-      byId("projCopy").textContent = t.copyDesc;
-
-      byId("modeBadge").textContent = isTeam ? t.modeTeam : t.modePublic;
-
-      setActiveLangButtons(lang);
-      renderFilters(lang);
-      renderProjects(lang);
-    }
-
-    // -----------------------------
-    // INIT
-    // -----------------------------
     (function init(){
-      byId("y").textContent = new Date().getFullYear();
+      const url = location.href.replace(/#.*$/,'');
+      document.getElementById("pageUrl").textContent = url;
 
-      // apply mode
-      applyMode();
+      const canvas = document.getElementById("qr");
+      const qr = makeQR(url);
+      if(qr.ok) drawQR(canvas, qr.matrix);
 
-      // set links
-      byId("btnCall").href = `tel:${CONTACT.phone}`;
-      byId("btnMail").href = `mailto:${CONTACT.email}`;
-      byId("btnLinkedIn").href = CONTACT.linkedin;
-      byId("btnExt").href = `tel:${CONTACT.ext}`;
+      const modalBack = document.getElementById("modalBack");
+      document.getElementById("openQr").addEventListener("click", ()=> modalBack.style.display="grid");
+      document.getElementById("closeQr").addEventListener("click", ()=> modalBack.style.display="none");
+      modalBack.addEventListener("click", (e)=>{ if(e.target === modalBack) modalBack.style.display="none"; });
 
-      // vCard dynamic (public/team)
-      byId("btnVcard").href = isTeam ? CONTACT.vcardTeam : CONTACT.vcardPublic;
-
-      // event tracking for main actions
-      byId("btnCall").addEventListener("click", ()=> trackEvent("call"));
-      byId("btnMail").addEventListener("click", ()=> trackEvent("email"));
-      byId("btnLinkedIn").addEventListener("click", ()=> trackEvent("linkedin"));
-      byId("btnVcard").addEventListener("click", ()=> trackEvent("vcard"));
-      byId("btnAbout").addEventListener("click", ()=> trackEvent("about"));
-      byId("btnPortfolio").addEventListener("click", ()=> trackEvent("portfolio"));
-      if (isTeam) byId("btnExt").addEventListener("click", ()=> trackEvent("extension"));
-
-      // language: ?lang=en/pl > localStorage > browser
-      const urlLang = qs("lang");
-      const stored = localStorage.getItem("lang");
-      const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
-      let lang = (urlLang==="pl" || urlLang==="en") ? urlLang : (stored==="pl"||stored==="en") ? stored : browser;
-
-      // lang buttons
-      byId("btnPL").addEventListener("click", ()=>{ applyLanguage("pl"); trackEvent("lang_pl"); });
-      byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
-
-      // QR modal
-      const cleanUrl = location.href.replace(/#.*$/,'');
-      byId("pageUrl").textContent = cleanUrl;
-
-      const qr = makeQR(cleanUrl);
-      if(qr.ok) drawQR(byId("qr"), qr.matrix);
-
-      const qrBack = byId("qrBack");
-      byId("openQr").addEventListener("click", ()=>{
-        qrBack.style.display="grid";
-        trackEvent("qr_open");
-      });
-      byId("closeQr").addEventListener("click", ()=> qrBack.style.display="none");
-      qrBack.addEventListener("click", (e)=>{ if(e.target===qrBack) qrBack.style.display="none"; });
-
-      byId("copyLink").addEventListener("click", async ()=>{
+      document.getElementById("copyLink").addEventListener("click", async ()=>{
         try{
-          await navigator.clipboard.writeText(cleanUrl);
-          alert(I18N[currentLang].copied);
-          trackEvent("copy_link");
+          await navigator.clipboard.writeText(url);
+          alert("Link skopiowany ✅");
         }catch(e){
-          alert(I18N[currentLang].copyFail);
+          alert("Nie mogę skopiować automatycznie. Skopiuj ręcznie z pola w oknie QR.");
         }
       });
-
-      // Project modal close
-      const projBack = byId("projBack");
-      byId("closeProj").addEventListener("click", ()=> projBack.style.display="none");
-      projBack.addEventListener("click", (e)=>{ if(e.target===projBack) projBack.style.display="none"; });
-
-      // initial language render
-      applyLanguage(lang);
     })();
   </script>
 </body>
