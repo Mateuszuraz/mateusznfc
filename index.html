@@ -18,6 +18,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="manifest.json">
 
+  <!-- Privacy analytics (GoatCounter) — PODMIEŃ TWOJ_KOD -->
+  <script data-goatcounter="https://TWOJ_KOD.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+
   <style>
     :root{
       --lime:#C9FF3B;
@@ -455,7 +459,6 @@
     }
     canvas#qr{ width: 240px; height:240px; image-rendering: pixelated; }
 
-    /* small helper */
     .mutedLine{
       font-size: 12.5px;
       color: rgba(10,15,11,.62);
@@ -469,7 +472,6 @@
   <div class="wrap">
     <main class="screen" role="main">
 
-      <!-- TOP BAR: language + mode -->
       <div class="topbar">
         <div class="badge" id="modeBadge">PUBLIC</div>
 
@@ -484,12 +486,10 @@
         </div>
       </div>
 
-      <!-- LOGO -->
       <div class="logo">
         <img src="dcpllogo_transparent_trim.png" alt="Dan Cake Polonia" />
       </div>
 
-      <!-- NAME -->
       <section class="nameBlock">
         <h1 class="nameBig">[MATEUSZ URAZ]</h1>
         <div class="roleLine" id="roleLine">
@@ -497,7 +497,6 @@
         </div>
       </section>
 
-      <!-- ACTION BUTTONS -->
       <section class="btns" aria-label="Actions">
         <a class="pill" id="btnCall" href="tel:+48452432235">
           <span class="iconCircle" aria-hidden="true">
@@ -524,7 +523,7 @@
           </div>
         </a>
 
-        <a class="pill" id="btnLinkedIn" href="https://www.linkedin.com/" target="_blank" rel="noopener">
+        <a class="pill" id="btnLinkedIn" href="https://www.linkedin.com/in/YOUR_HANDLE" target="_blank" rel="noopener">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M6.5 9.5V18" stroke="#0A0F0B" stroke-width="2.1" stroke-linecap="round"/>
@@ -536,7 +535,8 @@
           <span class="label" id="tLinkedIn">LINKEDIN</span>
         </a>
 
-        <a class="pill" id="btnVcard" href="./mateusz-uraz.vcf">
+        <!-- vCard dynamic: public/team -->
+        <a class="pill" id="btnVcard" href="./mateusz-uraz_public.vcf">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M7 4h10v16H7V4Z" stroke="#0A0F0B" stroke-width="1.9"/>
@@ -559,7 +559,7 @@
           </div>
         </a>
 
-        <a class="pill" href="#about">
+        <a class="pill" href="#about" id="btnAbout">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="#0A0F0B" stroke-width="2"/>
@@ -569,7 +569,7 @@
           <span class="label" id="tAboutBtn">O MNIE</span>
         </a>
 
-        <a class="pill" href="#portfolio">
+        <a class="pill" href="#portfolio" id="btnPortfolio">
           <span class="iconCircle" aria-hidden="true">
             <svg class="ico" viewBox="0 0 24 24" fill="none">
               <path d="M8 7h8M8 11h8M8 15h5" stroke="#0A0F0B" stroke-width="2" stroke-linecap="round"/>
@@ -580,7 +580,6 @@
         </a>
       </section>
 
-      <!-- FOOTER -->
       <footer class="footer">
         <div>
           <span id="sysLine">SYSTEM STATUS: OPTIMAL.</span><br/>
@@ -605,7 +604,6 @@
         Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.
       </div>
 
-      <!-- ABOUT -->
       <section class="section" id="about">
         <div class="card">
           <div class="h" id="tAboutTitle">O MNIE</div>
@@ -614,11 +612,9 @@
         </div>
       </section>
 
-      <!-- PORTFOLIO -->
       <section class="section" id="portfolio">
         <div class="card">
           <div class="h" id="tPortTitle">PORTFOLIO</div>
-
           <div class="filters" id="filters"></div>
           <div class="grid" id="projectsGrid"></div>
         </div>
@@ -660,18 +656,108 @@
 
   <script>
     // -----------------------------
-    // CONFIG / DATA (easy to edit)
+    // CONFIG
     // -----------------------------
     const CONTACT = {
       phone: "+48452432235",
       ext: "7441",
       email: "m.uraz@dancake.pl",
-      linkedin: "https://www.linkedin.com/", // <- podmień na swój
+      linkedin: "https://www.linkedin.com/in/YOUR_HANDLE", // <-- PODMIEŃ
       company: "DanCake Polonia Spółka z o.o.",
-      address: "ul. Transportowców 15, 32-500 Chrzanów"
+      address: "ul. Transportowców 15, 32-500 Chrzanów",
+      vcardPublic: "./mateusz-uraz_public.vcf",
+      vcardTeam: "./mateusz-uraz_team.vcf"
     };
 
-    // Portfolio: KPIs are examples — podmienisz na swoje realne liczby, kiedy będziesz chciał.
+    // -----------------------------
+    // MODE (public / team)
+    // -----------------------------
+    const qs = (k) => new URLSearchParams(location.search).get(k);
+    const isTeam = (qs("team") === "1");
+    const byId = (id) => document.getElementById(id);
+
+    // -----------------------------
+    // PRIVACY ANALYTICS (events)
+    // GoatCounter: custom events via goatcounter.count({path:"/event/..."})
+    // (działa jeśli w head masz snippet i licznik jest aktywny)
+    // -----------------------------
+    function trackEvent(name){
+      try{
+        if (window.goatcounter && typeof window.goatcounter.count === "function"){
+          const mode = isTeam ? "team" : "public";
+          const lang = (localStorage.getItem("lang") || "auto");
+          window.goatcounter.count({ path: `/event/${name}?mode=${mode}&lang=${lang}` });
+        }
+      }catch(e){ /* silent */ }
+    }
+
+    // -----------------------------
+    // I18N
+    // -----------------------------
+    const I18N = {
+      pl: {
+        modePublic: "PUBLIC",
+        modeTeam: "TEAM",
+        lang: "JĘZYK",
+        role: 'KOORDYNATOR <span class="mut">CONTINUOUS</span><br/> IMPROVEMENT',
+        call: "ZADZWOŃ",
+        mail: "NAPISZ E-MAIL",
+        linkedin: "LINKEDIN",
+        vcard: "ZAPISZ KONTAKT",
+        ext: "TELEFON WEW.",
+        aboutBtn: "O MNIE",
+        portfolioBtn: "PORTFOLIO",
+        sys: "SYSTEM STATUS: OPTIMAL.",
+        hint: "Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.",
+        aboutTitle: "O MNIE",
+        aboutText:
+          "Koordynator ds. Ciągłego Doskonalenia w DanCake Polonia. Łączę Lean z praktyką na hali: standaryzacja pracy, eliminacja strat, szkolenia i proste systemy danych. Stawiam na rozwiązania szybkie do wdrożenia — ale dopracowane i skuteczne.",
+        teamNote:
+          "Tryb TEAM aktywny: pokazuję dodatkowe informacje (np. telefon wewn.). Użyj publicznego linku dla osób z zewnątrz.",
+        portTitle: "PORTFOLIO",
+        qrTitle: "QR DO STRONY",
+        close: "Zamknij",
+        copyLink: "Kopiuj link",
+        details: "Szczegóły",
+        contact: "Kontakt",
+        copyDesc: "Kopiuj opis",
+        copied: "Skopiowane ✅",
+        copyFail: "Nie mogę skopiować automatycznie."
+      },
+      en: {
+        modePublic: "PUBLIC",
+        modeTeam: "TEAM",
+        lang: "LANG",
+        role: 'CONTINUOUS <span class="mut">IMPROVEMENT</span><br/> COORDINATOR',
+        call: "CALL",
+        mail: "EMAIL",
+        linkedin: "LINKEDIN",
+        vcard: "SAVE CONTACT",
+        ext: "EXTENSION",
+        aboutBtn: "ABOUT",
+        portfolioBtn: "PORTFOLIO",
+        sys: "SYSTEM STATUS: OPTIMAL.",
+        hint: "Tip: QR bottom-right. TEAM mode: add ?team=1 to the URL.",
+        aboutTitle: "ABOUT",
+        aboutText:
+          "Continuous Improvement Coordinator at DanCake Polonia. I combine Lean with real shop-floor execution: work standardization, waste removal, training and lightweight data systems. I focus on solutions that are easy to deploy — but polished and effective.",
+        teamNote:
+          "TEAM mode active: extra internal details are visible (e.g., extension). Use the public link for external contacts.",
+        portTitle: "PORTFOLIO",
+        qrTitle: "QR TO THIS PAGE",
+        close: "Close",
+        copyLink: "Copy link",
+        details: "Details",
+        contact: "Contact",
+        copyDesc: "Copy summary",
+        copied: "Copied ✅",
+        copyFail: "Clipboard not available."
+      }
+    };
+
+    // -----------------------------
+    // Portfolio DATA (edytujesz KPI kiedy chcesz)
+    // -----------------------------
     const PROJECTS = [
       {
         id: "skills",
@@ -766,95 +852,21 @@
     ];
 
     // -----------------------------
-    // I18N
+    // Filters
     // -----------------------------
-    const I18N = {
-      pl: {
-        modePublic: "PUBLIC",
-        modeTeam: "TEAM",
-        lang: "JĘZYK",
-        role: 'KOORDYNATOR <span class="mut">CONTINUOUS</span><br/> IMPROVEMENT',
-        call: "ZADZWOŃ",
-        mail: "NAPISZ E-MAIL",
-        linkedin: "LINKEDIN",
-        vcard: "ZAPISZ KONTAKT",
-        ext: "TELEFON WEW.",
-        aboutBtn: "O MNIE",
-        portfolioBtn: "PORTFOLIO",
-        sys: "SYSTEM STATUS: OPTIMAL.",
-        hint: "Tip: QR w prawym dolnym rogu. Tryb TEAM: dodaj ?team=1 do adresu.",
-        aboutTitle: "O MNIE",
-        aboutText:
-          "Koordynator ds. Ciągłego Doskonalenia w DanCake Polonia. Łączę Lean z praktyką na hali: standaryzacja pracy, eliminacja strat, szkolenia i proste systemy danych. Stawiam na rozwiązania szybkie do wdrożenia — ale dopracowane i skuteczne.",
-        teamNote:
-          "Tryb TEAM aktywny: pokazuję dodatkowe informacje (np. telefon wewn.). Użyj publicznego linku dla osób z zewnątrz.",
-        portTitle: "PORTFOLIO",
-        qrTitle: "QR DO STRONY",
-        close: "Zamknij",
-        copyLink: "Kopiuj link",
-        details: "Szczegóły",
-        contact: "Kontakt",
-        copyDesc: "Kopiuj opis",
-        copied: "Skopiowane ✅",
-        copyFail: "Nie mogę skopiować automatycznie."
-      },
-      en: {
-        modePublic: "PUBLIC",
-        modeTeam: "TEAM",
-        lang: "LANG",
-        role: 'CONTINUOUS <span class="mut">IMPROVEMENT</span><br/> COORDINATOR',
-        call: "CALL",
-        mail: "EMAIL",
-        linkedin: "LINKEDIN",
-        vcard: "SAVE CONTACT",
-        ext: "EXTENSION",
-        aboutBtn: "ABOUT",
-        portfolioBtn: "PORTFOLIO",
-        sys: "SYSTEM STATUS: OPTIMAL.",
-        hint: "Tip: QR bottom-right. TEAM mode: add ?team=1 to the URL.",
-        aboutTitle: "ABOUT",
-        aboutText:
-          "Continuous Improvement Coordinator at DanCake Polonia. I combine Lean with real shop-floor execution: work standardization, waste removal, training and lightweight data systems. I focus on solutions that are easy to deploy — but polished and effective.",
-        teamNote:
-          "TEAM mode active: extra internal details are visible (e.g., extension). Use the public link for external contacts.",
-        portTitle: "PORTFOLIO",
-        qrTitle: "QR TO THIS PAGE",
-        close: "Close",
-        copyLink: "Copy link",
-        details: "Details",
-        contact: "Contact",
-        copyDesc: "Copy summary",
-        copied: "Copied ✅",
-        copyFail: "Clipboard not available."
-      }
-    };
-
-    // -----------------------------
-    // HELPERS
-    // -----------------------------
-    const qs = (k) => new URLSearchParams(location.search).get(k);
-    const byId = (id) => document.getElementById(id);
+    const ALL_TAGS = Array.from(new Set(PROJECTS.flatMap(p => p.tags))).sort();
+    let activeTag = "ALL";
+    let currentLang = "pl";
 
     function setActiveLangButtons(lang){
       byId("btnPL").classList.toggle("active", lang==="pl");
       byId("btnEN").classList.toggle("active", lang==="en");
     }
 
-    // -----------------------------
-    // MODE (public / team)
-    // -----------------------------
-    const isTeam = (qs("team") === "1");
     function applyMode(){
-      byId("modeBadge").textContent = isTeam ? "TEAM" : "PUBLIC";
       byId("btnExt").style.display = isTeam ? "" : "none";
       byId("teamNote").style.display = isTeam ? "" : "none";
     }
-
-    // -----------------------------
-    // TAG FILTERS
-    // -----------------------------
-    const ALL_TAGS = Array.from(new Set(PROJECTS.flatMap(p => p.tags))).sort();
-    let activeTag = "ALL";
 
     function renderFilters(lang){
       const wrap = byId("filters");
@@ -866,6 +878,7 @@
         el.textContent = (t==="ALL" ? (lang==="pl" ? "WSZYSTKO" : "ALL") : t);
         el.addEventListener("click", () => {
           activeTag = t;
+          trackEvent("filter_" + (t==="ALL" ? "all" : t.toLowerCase()));
           renderFilters(lang);
           renderProjects(lang);
         });
@@ -875,6 +888,32 @@
 
     function projectMatches(p){
       return activeTag==="ALL" || p.tags.includes(activeTag);
+    }
+
+    function openProjectModal(p, lang){
+      const title = p.title[lang];
+      const kpi = p.kpi[lang];
+      const body = (isTeam ? p.case_team[lang] : p.case_public[lang]);
+
+      byId("projTitle").textContent = title;
+      byId("projKpi").textContent = kpi;
+      byId("projBody").textContent = body;
+
+      byId("projMail").href =
+        `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + title)}`;
+
+      byId("projCopy").onclick = async () => {
+        try{
+          await navigator.clipboard.writeText(`${title}\n${kpi}\n\n${body}`);
+          alert(I18N[lang].copied);
+          trackEvent("project_copy");
+        }catch(e){
+          alert(I18N[lang].copyFail);
+        }
+      };
+
+      trackEvent("project_open_" + p.id);
+      byId("projBack").style.display = "grid";
     }
 
     function renderProjects(lang){
@@ -934,8 +973,10 @@
 
         const mailLink = document.createElement("a");
         mailLink.className = "btnSmall";
-        mailLink.href = `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + p.title[lang])}`;
+        mailLink.href =
+          `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + p.title[lang])}`;
         mailLink.textContent = I18N[lang].contact;
+        mailLink.addEventListener("click", ()=> trackEvent("project_mail_" + p.id));
 
         actions.appendChild(detailsBtn);
         actions.appendChild(mailLink);
@@ -951,34 +992,7 @@
     }
 
     // -----------------------------
-    // PROJECT MODAL
-    // -----------------------------
-    function openProjectModal(p, lang){
-      const title = p.title[lang];
-      const kpi = p.kpi[lang];
-      const body = (isTeam ? p.case_team[lang] : p.case_public[lang]);
-
-      byId("projTitle").textContent = title;
-      byId("projKpi").textContent = kpi;
-      byId("projBody").textContent = body;
-
-      byId("projMail").href = `mailto:${CONTACT.email}?subject=${encodeURIComponent((lang==="pl"?"Projekt":"Project") + " — " + title)}`;
-
-      byId("projCopy").onclick = async () => {
-        try{
-          await navigator.clipboard.writeText(`${title}\n${kpi}\n\n${body}`);
-          alert(I18N[lang].copied);
-        }catch(e){
-          alert(I18N[lang].copyFail);
-        }
-      };
-
-      const back = byId("projBack");
-      back.style.display = "grid";
-    }
-
-    // -----------------------------
-    // QR (same as earlier, lightweight)
+    // QR (lightweight)
     // -----------------------------
     function makeQR(text){
       const bytes = new TextEncoder().encode(text);
@@ -1087,8 +1101,10 @@
     // APPLY LANGUAGE
     // -----------------------------
     function applyLanguage(lang){
-      const t = I18N[lang];
+      currentLang = lang;
+      localStorage.setItem("lang", lang);
 
+      const t = I18N[lang];
       byId("langLabel").textContent = t.lang;
       byId("roleLine").innerHTML = t.role;
 
@@ -1116,8 +1132,9 @@
       byId("projMail").textContent = t.contact;
       byId("projCopy").textContent = t.copyDesc;
 
-      setActiveLangButtons(lang);
+      byId("modeBadge").textContent = isTeam ? t.modeTeam : t.modePublic;
 
+      setActiveLangButtons(lang);
       renderFilters(lang);
       renderProjects(lang);
     }
@@ -1126,26 +1143,38 @@
     // INIT
     // -----------------------------
     (function init(){
-      document.getElementById("y").textContent = new Date().getFullYear();
+      byId("y").textContent = new Date().getFullYear();
 
       // apply mode
       applyMode();
 
-      // set contact links
+      // set links
       byId("btnCall").href = `tel:${CONTACT.phone}`;
       byId("btnMail").href = `mailto:${CONTACT.email}`;
       byId("btnLinkedIn").href = CONTACT.linkedin;
       byId("btnExt").href = `tel:${CONTACT.ext}`;
 
-      // language preference: URL ?lang=en/pl > localStorage > browser
+      // vCard dynamic (public/team)
+      byId("btnVcard").href = isTeam ? CONTACT.vcardTeam : CONTACT.vcardPublic;
+
+      // event tracking for main actions
+      byId("btnCall").addEventListener("click", ()=> trackEvent("call"));
+      byId("btnMail").addEventListener("click", ()=> trackEvent("email"));
+      byId("btnLinkedIn").addEventListener("click", ()=> trackEvent("linkedin"));
+      byId("btnVcard").addEventListener("click", ()=> trackEvent("vcard"));
+      byId("btnAbout").addEventListener("click", ()=> trackEvent("about"));
+      byId("btnPortfolio").addEventListener("click", ()=> trackEvent("portfolio"));
+      if (isTeam) byId("btnExt").addEventListener("click", ()=> trackEvent("extension"));
+
+      // language: ?lang=en/pl > localStorage > browser
       const urlLang = qs("lang");
       const stored = localStorage.getItem("lang");
       const browser = (navigator.language || "pl").toLowerCase().startsWith("pl") ? "pl" : "en";
       let lang = (urlLang==="pl" || urlLang==="en") ? urlLang : (stored==="pl"||stored==="en") ? stored : browser;
 
-      // buttons
-      byId("btnPL").addEventListener("click", ()=>{ lang="pl"; localStorage.setItem("lang","pl"); applyLanguage("pl"); });
-      byId("btnEN").addEventListener("click", ()=>{ lang="en"; localStorage.setItem("lang","en"); applyLanguage("en"); });
+      // lang buttons
+      byId("btnPL").addEventListener("click", ()=>{ applyLanguage("pl"); trackEvent("lang_pl"); });
+      byId("btnEN").addEventListener("click", ()=>{ applyLanguage("en"); trackEvent("lang_en"); });
 
       // QR modal
       const cleanUrl = location.href.replace(/#.*$/,'');
@@ -1155,13 +1184,21 @@
       if(qr.ok) drawQR(byId("qr"), qr.matrix);
 
       const qrBack = byId("qrBack");
-      byId("openQr").addEventListener("click", ()=> qrBack.style.display="grid");
+      byId("openQr").addEventListener("click", ()=>{
+        qrBack.style.display="grid";
+        trackEvent("qr_open");
+      });
       byId("closeQr").addEventListener("click", ()=> qrBack.style.display="none");
       qrBack.addEventListener("click", (e)=>{ if(e.target===qrBack) qrBack.style.display="none"; });
 
       byId("copyLink").addEventListener("click", async ()=>{
-        try{ await navigator.clipboard.writeText(cleanUrl); alert(I18N[lang].copied); }
-        catch(e){ alert(I18N[lang].copyFail); }
+        try{
+          await navigator.clipboard.writeText(cleanUrl);
+          alert(I18N[currentLang].copied);
+          trackEvent("copy_link");
+        }catch(e){
+          alert(I18N[currentLang].copyFail);
+        }
       });
 
       // Project modal close
@@ -1171,13 +1208,6 @@
 
       // initial language render
       applyLanguage(lang);
-
-      // TEAM badge text in chosen language (keeps it simple)
-      byId("modeBadge").textContent = isTeam ? I18N[lang].modeTeam : I18N[lang].modePublic;
-      // update badge on lang change too:
-      const updateBadge = () => byId("modeBadge").textContent = isTeam ? I18N[lang].modeTeam : I18N[lang].modePublic;
-      byId("btnPL").addEventListener("click", updateBadge);
-      byId("btnEN").addEventListener("click", updateBadge);
     })();
   </script>
 </body>
